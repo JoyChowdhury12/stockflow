@@ -188,8 +188,8 @@ function TransactModal({ product, type, onClose, onDone }) {
       </div>
       {amount && parseFloat(amount) > 0 && (
         <div style={{ fontSize: 13, color: 'var(--text2)', padding: '4px 2px' }}>
-          New total: <strong style={{ color: type === 'in' ? 'var(--green)' : product.quantity - parseFloat(amount) < 0 ? 'var(--red)' : 'var(--amber)' }}>
-            {type === 'in' ? product.quantity + parseFloat(amount) : product.quantity - parseFloat(amount)}
+          New total: <strong style={{ color: type === 'in' ? 'var(--green)' : parseFloat(product.quantity) - parseFloat(amount) < 0 ? 'var(--red)' : 'var(--amber)' }}>
+            {type === 'in' ? parseFloat(product.quantity) + parseFloat(amount) : parseFloat(product.quantity) - parseFloat(amount)}
           </strong> {product.category}
         </div>
       )}

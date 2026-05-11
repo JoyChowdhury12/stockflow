@@ -119,7 +119,7 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
     if (!form.name.trim()) { setError('Product name required'); return; }
     setSaving(true);
     try {
-      const product = await api.createProduct(warehouseId, { ...form, quantity: parseInt(form.quantity) || 0 });
+      const product = await api.createProduct(warehouseId, { ...form, quantity: parseFloat(form.quantity) || 0 });
       onAdd(product);
     } catch (e) { setError(e.message); }
     setSaving(false);
@@ -140,7 +140,7 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
       </div>
       <div className="input-group">
         <label className="input-label">Initial Quantity (optional)</label>
-        <input className="input" type="number" min="0" placeholder="0" value={form.quantity} onChange={set('quantity')} />
+        <input className="input" type="number" step="0.01" min="0" placeholder="0" value={form.quantity} onChange={set('quantity')} />
       </div>
       {error && <div className="error-text">{error}</div>}
     </Modal>
@@ -154,7 +154,7 @@ function TransactModal({ product, type, onClose, onDone }) {
   const [error, setError] = useState('');
 
   const handleSubmit = async () => {
-    const qty = parseInt(amount);
+    const qty = parseFloat(amount);
     if (!qty || qty <= 0) { setError('Enter a valid amount'); return; }
     setSaving(true);
     try {
@@ -183,13 +183,13 @@ function TransactModal({ product, type, onClose, onDone }) {
       </div>
       <div className="input-group">
         <label className="input-label">Amount to {type === 'in' ? 'Add' : 'Remove'}</label>
-        <input className="input" type="number" min="1" autoFocus placeholder="Enter quantity"
+        <input className="input" type="number" step="0.01" min="0" autoFocus placeholder="Enter quantity"
           value={amount} onChange={e => setAmount(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
       </div>
-      {amount && parseInt(amount) > 0 && (
+      {amount && parseFloat(amount) > 0 && (
         <div style={{ fontSize: 13, color: 'var(--text2)', padding: '4px 2px' }}>
-          New total: <strong style={{ color: type === 'in' ? 'var(--green)' : product.quantity - parseInt(amount) < 0 ? 'var(--red)' : 'var(--amber)' }}>
-            {type === 'in' ? product.quantity + parseInt(amount) : product.quantity - parseInt(amount)}
+          New total: <strong style={{ color: type === 'in' ? 'var(--green)' : product.quantity - parseFloat(amount) < 0 ? 'var(--red)' : 'var(--amber)' }}>
+            {type === 'in' ? product.quantity + parseFloat(amount) : product.quantity - parseFloat(amount)}
           </strong> {product.category}
         </div>
       )}

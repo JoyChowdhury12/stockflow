@@ -315,7 +315,7 @@ app.post('/api/products/:id/transaction', auth, async (req, res) => {
 
     const qty = parseFloat(amount);
 
-    let newQty = product.quantity;
+    let newQty = parseFloat(product.quantity);
 
     if (type === 'in') {
       newQty += qty;

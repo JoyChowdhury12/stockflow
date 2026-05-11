@@ -404,6 +404,10 @@ app.get('/api/products/:id/history', auth, async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('StockFlow Backend Running');
+});
+
 initDb()
   .then(() => {
     app.listen(PORT, () => {

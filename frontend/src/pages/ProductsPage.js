@@ -247,7 +247,10 @@ export default function ProductsPage({ warehouse, onBack }) {
     catch (e) { toast(e.message, 'error'); }
   };
 
-  const totalByCategory = (cat) => products.filter(p => p.category === cat).reduce((s, p) => s + p.quantity, 0);
+  const totalByCategory = (cat) =>
+    products
+      .filter(p => p.category === cat)
+      .reduce((s, p) => s + parseFloat(p.quantity || 0), 0);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>

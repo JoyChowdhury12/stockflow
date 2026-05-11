@@ -1,4 +1,4 @@
-const BASE = process.env.REACT_APP_API_URL || '';
+const BASE = 'https://stockflow-20tm.onrender.com';
 
 function getToken() {
   return localStorage.getItem('wh_token');

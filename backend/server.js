@@ -316,7 +316,6 @@ app.post('/api/products/:id/transaction', auth, async (req, res) => {
     const qty = parseFloat(amount);
 
     let newQty = parseFloat(product.quantity);
-
     if (type === 'in') {
       newQty += qty;
     } else {
@@ -360,7 +359,37 @@ app.post('/api/products/:id/transaction', auth, async (req, res) => {
     });
   }
 });
+app.put('/api/products/:id', auth, async (req, res) => {
+  try {
+    const { name, category } = req.body;
 
+    const updated = await query(
+      `UPDATE products
+       SET name = $1,
+           category = $2
+       WHERE id = $3
+       RETURNING *`,
+      [
+        name,
+        category,
+        req.params.id
+      ]
+    );
+
+    if (updated.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Product not found',
+      });
+    }
+
+    res.json(updated.rows[0]);
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
 app.delete('/api/products/:id', auth, async (req, res) => {
   try {
     await query(

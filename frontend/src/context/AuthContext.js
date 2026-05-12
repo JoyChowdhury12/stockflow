@@ -21,16 +21,21 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const { token, user } = await api.login({ email, password });
+
     localStorage.setItem('wh_token', token);
     setUser(user || {});
+
+    window.location.href = '/';
   };
 
   const register = async (name, email, password) => {
     const { token, user } = await api.register({ name, email, password });
+
     localStorage.setItem('wh_token', token);
     setUser(user || {});
-  };
 
+    window.location.href = '/';
+  };
   const logout = () => {
     localStorage.clear();
     setUser(null);

@@ -32,8 +32,9 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('wh_token');
+    localStorage.clear();
     setUser(null);
+    window.location.href = '/';
   };
 
   const updateUser = (updated) => setUser(updated);

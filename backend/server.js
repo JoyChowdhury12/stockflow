@@ -244,6 +244,12 @@ app.post('/api/warehouses', auth, async (req, res) => {
     res.json(inserted.rows[0]);
 
   } catch (e) {
+    if (e.message.includes('unique_user_warehouse')) {
+      return res.status(400).json({
+        error: 'Warehouse name already exists.',
+      });
+    }
+
     res.status(500).json({
       error: e.message,
     });
@@ -290,6 +296,12 @@ app.post('/api/warehouses/:whId/products', auth, async (req, res) => {
     res.json(inserted.rows[0]);
 
   } catch (e) {
+    if (e.message.includes('unique_warehouse_product')) {
+      return res.status(400).json({
+        error: 'Product already exists in this warehouse.',
+      });
+    }
+
     res.status(500).json({
       error: e.message,
     });

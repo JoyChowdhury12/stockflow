@@ -458,6 +458,71 @@ app.delete('/api/warehouses/:id', auth, async (req, res) => {
     });
   }
 });
+app.put('/api/user/name', auth, async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const updated = await query(
+      `UPDATE users
+       SET name = $1
+       WHERE id = $2
+       RETURNING id, name, email`,
+      [name, req.user.id]
+    );
+
+    res.json(updated.rows[0]);
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
+app.put('/api/user/email', auth, async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const updated = await query(
+      `UPDATE users
+       SET email = $1
+       WHERE id = $2
+       RETURNING id, name, email`,
+      [email.toLowerCase(), req.user.id]
+    );
+
+    res.json(updated.rows[0]);
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
+app.put('/api/user/password', auth, async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    const hashed = bcrypt.hashSync(password, 10);
+
+    await query(
+      `UPDATE users
+       SET password = $1
+       WHERE id = $2`,
+      [hashed, req.user.id]
+    );
+
+    res.json({
+      success: true,
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
 app.get('/api/products/:id/history', auth, async (req, res) => {
   try {
     const history = await query(

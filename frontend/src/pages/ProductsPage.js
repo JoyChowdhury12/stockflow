@@ -116,13 +116,27 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
   const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
 
   const handleAdd = async () => {
-    if (!form.name.trim()) { setError('Product name required'); return; }
+    if (saving) return;
+
+    if (!form.name.trim()) {
+      setError('Product name required');
+      return;
+    }
+
     setSaving(true);
+
     try {
-      const product = await api.createProduct(warehouseId, { ...form, quantity: parseFloat(form.quantity) || 0 });
-      onAdd(product);
-    } catch (e) { setError(e.message); }
-    setSaving(false);
+      await api.createProduct(warehouseId, {
+        ...form,
+        quantity: parseFloat(form.quantity) || 0
+      });
+
+      onAdd();
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -237,8 +251,18 @@ export default function ProductsPage({ warehouse, onBack }) {
     ((p?.name || "").toLowerCase()).includes((search || "").toLowerCase()) ||
     ((p?.category || "").toLowerCase()).includes((search || "").toLowerCase())
   );
-  const handleAdd = async () => { setShowAdd(false); await load(); toast('Product added!', 'success'); };
-  const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast('Product updated!', 'success'); };
+  const handleAdd = async () => {
+    setShowAdd(false);
+
+    setTimeout(async () => {
+      try {
+        await load();
+        toast('Product added!', 'success');
+      } catch (e) {
+        toast('Failed to refresh products', 'error');
+      }
+    }, 800);
+  }; const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast('Product updated!', 'success'); };
   const handleTransact = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setTransact(null); toast(transact?.type === 'in' ? 'Stock added!' : 'Stock removed!', 'success'); };
   const handleDelete = async (product) => {
     if (!window.confirm(`Are you sure you want to delete "${product.name}"? This action cannot be undone.`)) {

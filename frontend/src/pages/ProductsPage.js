@@ -124,6 +124,7 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
     }
 
     setSaving(true);
+    setError('');
 
     try {
       await api.createProduct(warehouseId, {
@@ -134,6 +135,7 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
       onAdd();
     } catch (e) {
       setError(e.message);
+      setSaving(false);
     } finally {
       setSaving(false);
     }

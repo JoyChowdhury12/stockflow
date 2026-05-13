@@ -49,8 +49,15 @@ export default function Navbar({ warehouseName, onBack }) {
         if (form.newPassword.length < 6) { setError('New password must be 6+ characters'); setLoading(false); return; }
         body = { currentPassword: form.currentPassword, newPassword: form.newPassword };
       }
-      const updated = await api.updateProfile(body);
-      updateUser(updated);
+      let updated;
+
+      if (modal === 'name') {
+        updated = await api.changeName(form.name);
+      } else if (modal === 'email') {
+        updated = await api.changeEmail(form.email);
+      } else if (modal === 'password') {
+        updated = await api.changePassword(form.newPassword);
+      } updateUser(updated);
       toast('Profile updated!', 'success');
       closeModal();
     } catch (e) { setError(e.message); }
@@ -96,7 +103,7 @@ export default function Navbar({ warehouseName, onBack }) {
             <Avatar name={user?.name} />
             <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', maxWidth: 80, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.name}</span>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
-              <path d="M2 4l4 4 4-4" stroke="var(--text2)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M2 4l4 4 4-4" stroke="var(--text2)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
 
@@ -122,7 +129,7 @@ export default function Navbar({ warehouseName, onBack }) {
                   color: 'var(--text)', fontSize: 14, fontFamily: 'var(--font)',
                   transition: 'background 0.12s',
                 }} onMouseEnter={e => e.currentTarget.style.background = 'var(--bg3)'}
-                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   {item.label}
                 </button>
               ))}
@@ -133,7 +140,7 @@ export default function Navbar({ warehouseName, onBack }) {
                 color: 'var(--red)', fontSize: 14, fontFamily: 'var(--font)',
                 transition: 'background 0.12s',
               }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
-                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                 🚪  Logout
               </button>
             </div>

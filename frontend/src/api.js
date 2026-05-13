@@ -49,6 +49,23 @@ export const api = {
   login: (body) => request('/auth/login', { method: 'POST', body }),
   register: (body) => request('/auth/register', { method: 'POST', body }),
   getProfile: () => request('/auth/profile'),
+  changeName: (name) =>
+    request('/user/name', {
+      method: 'PUT',
+      body: { name },
+    }),
+
+  changeEmail: (email) =>
+    request('/user/email', {
+      method: 'PUT',
+      body: { email },
+    }),
+
+  changePassword: (password) =>
+    request('/user/password', {
+      method: 'PUT',
+      body: { password },
+    }),
   updateProfile: (body) => request('/auth/profile', { method: 'PUT', body }),
 
   getWarehouses: () => request('/warehouses'),

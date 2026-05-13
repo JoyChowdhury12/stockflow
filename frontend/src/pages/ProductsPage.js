@@ -143,7 +143,8 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
 
   return (
     <Modal title="Add Product" onClose={onClose}
-      footer={<><button className="btn btn-secondary" onClick={onClose}>Cancel</button><button className="btn btn-primary" onClick={handleAdd} disabled={saving}>{saving ? 'Adding...' : 'Add Product'}</button></>}>
+      footer={<><button className="btn btn-secondary" onClick={onClose}>Cancel</button>
+        <button className="btn btn-primary" onClick={handleAdd} disabled={saving}>{saving ? 'Adding...' : 'Add Product'}</button></>}>
       <div className="input-group">
         <label className="input-label">Product Name</label>
         <input className="input" autoFocus placeholder="e.g. Red Shirt L" value={form.name} onChange={set('name')} onKeyDown={e => e.key === 'Enter' && handleAdd()} />

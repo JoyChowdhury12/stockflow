@@ -424,7 +424,40 @@ app.delete('/api/products/:id', auth, async (req, res) => {
     });
   }
 });
+app.delete('/api/warehouses/:id', auth, async (req, res) => {
+  try {
+    const products = await query(
+      'SELECT id FROM products WHERE warehouse_id = $1',
+      [req.params.id]
+    );
 
+    for (const product of products.rows) {
+      await query(
+        'DELETE FROM transactions WHERE product_id = $1',
+        [product.id]
+      );
+    }
+
+    await query(
+      'DELETE FROM products WHERE warehouse_id = $1',
+      [req.params.id]
+    );
+
+    await query(
+      'DELETE FROM warehouses WHERE id = $1',
+      [req.params.id]
+    );
+
+    res.json({
+      success: true,
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
 app.get('/api/products/:id/history', auth, async (req, res) => {
   try {
     const history = await query(

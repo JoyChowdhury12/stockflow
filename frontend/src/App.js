@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './components/Toast';
+
 import AuthPage from './pages/AuthPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+
 import WarehousesPage from './pages/WarehousesPage';
 import ProductsPage from './pages/ProductsPage';
+
 import './index.css';
 
 function AppInner() {
@@ -79,9 +86,25 @@ export default function App() {
           }}
         >
           <div style={{ flex: 1 }}>
-            <AppInner />
-          </div>
+            <Routes>
 
+              <Route
+                path="/forgot-password"
+                element={<ForgotPasswordPage />}
+              />
+
+              <Route
+                path="/reset-password/:token"
+                element={<ResetPasswordPage />}
+              />
+
+              <Route
+                path="*"
+                element={<AppInner />}
+              />
+
+            </Routes>
+          </div>
           <div
             style={{
               textAlign: 'center',

@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const { Pool } = require('pg');
 
 const app = express();
@@ -18,6 +20,14 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
+  },
+});
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
@@ -55,6 +65,11 @@ async function initDb() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
+  await query(`
+  ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS reset_token TEXT,
+  ADD COLUMN IF NOT EXISTS reset_token_expiry BIGINT
+`);
 
   await query(`
     CREATE TABLE IF NOT EXISTS warehouses (
@@ -204,6 +219,147 @@ app.get('/api/auth/profile', auth, async (req, res) => {
     );
 
     res.json(result.rows[0]);
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
+app.post('/api/auth/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        error: 'Email is required',
+      });
+    }
+
+    const result = await query(
+      'SELECT * FROM users WHERE email = $1',
+      [email.toLowerCase()]
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'No account found with this email',
+      });
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+
+    const expiry = Date.now() + 1000 * 60 * 15;
+
+    await query(
+      `UPDATE users
+       SET reset_token = $1,
+           reset_token_expiry = $2
+       WHERE id = $3`,
+      [token, expiry, user.id]
+    );
+
+    const resetLink =
+      `${process.env.CLIENT_URL}/reset-password/${token}`;
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'StockFlow Password Reset',
+      html: `
+        <div style="font-family:sans-serif;padding:20px;">
+          <h2>Reset Your Password</h2>
+
+          <p>
+            You requested a password reset for your StockFlow account.
+          </p>
+
+          <a
+            href="${resetLink}"
+            style="
+              display:inline-block;
+              padding:12px 18px;
+              background:#4f8ef7;
+              color:white;
+              text-decoration:none;
+              border-radius:8px;
+            "
+          >
+            Reset Password
+          </a>
+
+          <p style="margin-top:20px;">
+            This link expires in 15 minutes.
+          </p>
+        </div>
+      `,
+    });
+
+    res.json({
+      success: true,
+      message: 'Password reset email sent',
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
+app.post('/api/auth/reset-password', async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({
+        error: 'Missing fields',
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({
+        error: 'Password must be at least 6 characters',
+      });
+    }
+
+    const result = await query(
+      `SELECT * FROM users
+       WHERE reset_token = $1`,
+      [token]
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(400).json({
+        error: 'Invalid reset token',
+      });
+    }
+
+    if (Date.now() > user.reset_token_expiry) {
+      return res.status(400).json({
+        error: 'Reset token expired',
+      });
+    }
+
+    const hashed = bcrypt.hashSync(password, 10);
+
+    await query(
+      `UPDATE users
+       SET password = $1,
+           reset_token = NULL,
+           reset_token_expiry = NULL
+       WHERE id = $2`,
+      [hashed, user.id]
+    );
+
+    res.json({
+      success: true,
+    });
 
   } catch (e) {
     res.status(500).json({

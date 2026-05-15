@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useAuth } from '../context/AuthContext';
 
 export default function AuthPage() {
@@ -50,7 +52,7 @@ export default function AuthPage() {
             }}
           />
           <h1 style={{ fontFamily: 'var(--font-head)', fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px' }}>StockFlow</h1>
-          <p style={{ color: 'var(--text2)', fontSize: 14, marginTop: 6 }}>Warehouse management, simplified</p>
+          <p style={{ color: 'var(--text2)', fontSize: 14, marginTop: 6 }}>Better Inventory Begins Here</p>
         </div>
 
         <div className="card">
@@ -89,6 +91,28 @@ export default function AuthPage() {
             {error && (
               <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: '10px 12px', color: '#f87171', fontSize: 13 }}>
                 {error}
+              </div>
+            )}
+
+            {mode === 'login' && (
+              <div
+                style={{
+                  textAlign: 'right',
+                  marginTop: -4,
+                  marginBottom: 6,
+                }}
+              >
+                <Link
+                  to="/forgot-password"
+                  style={{
+                    color: 'var(--accent)',
+                    fontSize: 13,
+                    textDecoration: 'none',
+                    fontWeight: 500,
+                  }}
+                >
+                  Forgot Password?
+                </Link>
               </div>
             )}
 

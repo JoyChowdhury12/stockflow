@@ -554,6 +554,7 @@ app.get('/api/history-by-date', auth, async (req, res) => {
         products.category,
         transactions.type,
         transactions.amount,
+        transactions.note,
         transactions.quantity_after,
         transactions.created_at
       FROM transactions

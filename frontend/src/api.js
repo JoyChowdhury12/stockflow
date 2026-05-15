@@ -79,4 +79,5 @@ export const api = {
   deleteProduct: (id) => request(`/products/${id}`, { method: 'DELETE' }),
   transact: (id, body) => request(`/products/${id}/transaction`, { method: 'POST', body }),
   getHistory: (id) => request(`/products/${id}/history`),
+  getHistoryByDate: (date) => request(`/history-by-date?date=${date}`),
 };

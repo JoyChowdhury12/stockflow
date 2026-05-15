@@ -231,7 +231,7 @@ function TransactModal({ product, type, onClose, onDone }) {
     </Modal>
   );
 }
-function DateHistoryModal({ onClose }) {
+function DateHistoryModal({ warehouse, onClose }) {
   const [date, setDate] = useState(
     new Date().toISOString().split('T')[0]
   );
@@ -243,7 +243,7 @@ function DateHistoryModal({ onClose }) {
     setLoading(true);
 
     try {
-      const data = await api.getHistoryByDate(date);
+      const data = await api.getHistoryByDate(warehouse.id, date);;
       setHistory(data.history || []);
     } catch (e) {
       console.error(e);
@@ -506,6 +506,7 @@ export default function ProductsPage({ warehouse, onBack }) {
       </div>
       {showDateHistory && (
         <DateHistoryModal
+          warehouse={warehouse}
           onClose={() => setShowDateHistory(false)}
         />
       )}

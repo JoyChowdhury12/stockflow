@@ -344,6 +344,15 @@ function DateHistoryModal({ onClose }) {
                 {h.type === 'in' ? '+' : '-'}
                 {h.amount}
               </div>
+              {h.note && (
+                <div style={{
+                  fontSize: 12,
+                  color: 'var(--text2)',
+                  marginTop: 4
+                }}>
+                  📝 {h.note}
+                </div>
+              )}
 
               <div style={{
                 fontSize: 12,

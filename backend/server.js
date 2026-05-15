@@ -267,9 +267,15 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     const resetLink =
       `${process.env.CLIENT_URL}/reset-password/${token}`;
 
+
+    console.log('EMAIL:', process.env.BREVO_EMAIL);
+    console.log(
+      process.env.BREVO_SMTP_KEY
+        ? 'SMTP KEY FOUND'
+        : 'SMTP KEY MISSING'
+    );
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: user.email,
+      from: process.env.BREVO_EMAIL, to: user.email,
       subject: 'StockFlow Password Reset',
       html: `
         <div style="font-family:sans-serif;padding:20px;">
@@ -299,13 +305,6 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         </div>
       `,
     });
-    console.log('EMAIL:', process.env.BREVO_EMAIL);
-    console.log(
-      process.env.BREVO_SMTP_KEY
-        ? 'SMTP KEY FOUND'
-        : 'SMTP KEY MISSING'
-    );
-
     res.json({
       success: true,
       message: 'Password reset email sent',

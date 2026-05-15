@@ -8,29 +8,43 @@ import './index.css';
 
 function AppInner() {
   const { user, loading } = useAuth();
+
   const [warehouse, setWarehouse] = useState(() => {
     const saved = localStorage.getItem('selectedWarehouse');
     return saved ? JSON.parse(saved) : null;
   });
-  if (loading) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: 40, marginBottom: 16 }}>📦</div>
-        <span className="spinner spinner-lg" style={{ margin: '0 auto' }} />
+
+  if (loading)
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'var(--bg)',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 40, marginBottom: 16 }}>📦</div>
+
+          <div className="modern-loader"></div>
+        </div>
       </div>
-    </div>
-  );
+    );
 
   if (!user) return <AuthPage />;
 
-  if (warehouse) return (
-    <ProductsPage
-      warehouse={warehouse}
-      onBack={() => {
-        localStorage.removeItem('selectedWarehouse');
-        setWarehouse(null);
-      }} />
-  );
+  if (warehouse)
+    return (
+      <ProductsPage
+        warehouse={warehouse}
+        onBack={() => {
+          localStorage.removeItem('selectedWarehouse');
+          setWarehouse(null);
+        }}
+      />
+    );
 
   return (
     <WarehousesPage

@@ -24,16 +24,12 @@ const pool = new Pool({
 });
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: 'smtp-relay.brevo.com',
   port: 587,
   secure: false,
-  requireTLS: true,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
+    user: process.env.BREVO_EMAIL,
+    pass: process.env.BREVO_SMTP_KEY,
   },
 });
 

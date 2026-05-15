@@ -53,6 +53,15 @@ export default function Navbar({ warehouseName, onBack }) {
           return;
         }
 
+        if (
+          !form.email.includes('@') ||
+          !form.email.includes('.')
+        ) {
+          setError('Enter a valid email');
+          setLoading(false);
+          return;
+        }
+
         body = {
           email: form.email,
           currentPassword: form.currentPassword,

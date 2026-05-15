@@ -506,14 +506,23 @@ app.put('/api/user/email', auth, async (req, res) => {
         error: 'Current password is incorrect',
       });
     }
+    const existing = await query(
+      'SELECT id FROM users WHERE email = $1 AND id != $2',
+      [email.toLowerCase(), req.user.id]
+    );
+
+    if (existing.rows.length > 0) {
+      return res.status(400).json({
+        error: 'Email already in use',
+      });
+    }
 
     const updated = await query(
       `UPDATE users
        SET email = $1
        WHERE id = $2
        RETURNING id, name, email`,
-      [email, req.user.id]
-    );
+      [email.toLowerCase(), req.user.id]);
 
     res.json(updated.rows[0]);
 

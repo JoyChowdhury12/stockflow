@@ -238,7 +238,7 @@ function DateHistoryModal({ onClose }) {
 
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);
-
+  const [search, setSearch] = useState('');
   const loadHistory = async () => {
     setLoading(true);
 
@@ -255,7 +255,9 @@ function DateHistoryModal({ onClose }) {
   useEffect(() => {
     loadHistory();
   }, []);
-
+  const filteredHistory = history.filter(h =>
+    h.product_name.toLowerCase().includes(search.toLowerCase())
+  );
   return (
     <Modal
       title="Date History"
@@ -269,6 +271,16 @@ function DateHistoryModal({ onClose }) {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+        />
+      </div>
+      <div className="input-group">
+        <label className="input-label">Search Product</label>
+
+        <input
+          className="input"
+          placeholder="Search product..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
@@ -305,7 +317,7 @@ function DateHistoryModal({ onClose }) {
           flexDirection: 'column',
           gap: 10
         }}>
-          {history.map((h, i) => (
+          {filteredHistory.map((h, i) => (
             <div
               key={i}
               style={{

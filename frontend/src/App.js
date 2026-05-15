@@ -8,8 +8,10 @@ import './index.css';
 
 function AppInner() {
   const { user, loading } = useAuth();
-  const [warehouse, setWarehouse] = useState(null);
-
+  const [warehouse, setWarehouse] = useState(() => {
+    const saved = localStorage.getItem('selectedWarehouse');
+    return saved ? JSON.parse(saved) : null;
+  });
   if (loading) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
       <div style={{ textAlign: 'center' }}>
@@ -24,11 +26,20 @@ function AppInner() {
   if (warehouse) return (
     <ProductsPage
       warehouse={warehouse}
-      onBack={() => setWarehouse(null)}
-    />
+      onBack={() => {
+        localStorage.removeItem('selectedWarehouse');
+        setWarehouse(null);
+      }} />
   );
 
-  return <WarehousesPage onEnter={setWarehouse} />;
+  return (
+    <WarehousesPage
+      onEnter={(wh) => {
+        localStorage.setItem('selectedWarehouse', JSON.stringify(wh));
+        setWarehouse(wh);
+      }}
+    />
+  );
 }
 
 export default function App() {

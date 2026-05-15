@@ -5,8 +5,8 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const { Pool } = require('pg');
+const axios = require('axios');
 
 const app = express();
 
@@ -23,15 +23,6 @@ const pool = new Pool({
   },
 });
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.BREVO_EMAIL,
-    pass: process.env.BREVO_SMTP_KEY,
-  },
-});
 
 async function query(sql, params = []) {
   const result = await pool.query(sql, params);
@@ -278,47 +269,59 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
     console.log('Before sendMail');
 
-    await transporter.sendMail({
-      from: 'ab73fb001@smtp-brevo.com', to: user.email,
-      subject: 'StockFlow Password Reset',
-      html: `
-        <div style="font-family:sans-serif;padding:20px;">
-          <h2>Reset Your Password</h2>
+    await axios.post(
+      'https://api.brevo.com/v3/smtp/email',
+      {
+        sender: {
+          name: 'StockFlow',
+          email: process.env.BREVO_EMAIL
+        },
 
-          <p>
-            You requested a password reset for your StockFlow account.
-          </p>
+        to: [
+          {
+            email: user.email,
+          },
+        ],
 
-          <a
-            href="${resetLink}"
-            style="
-              display:inline-block;
-              padding:12px 18px;
-              background:#4f8ef7;
-              color:white;
-              text-decoration:none;
-              border-radius:8px;
-            "
-          >
-            Reset Password
-          </a>
+        subject: 'StockFlow Password Reset',
 
-          <p style="margin-top:20px;">
-            This link expires in 15 minutes.
-          </p>
-        </div>
-      `,
-    });
-    console.log('Before sendMail');
+        htmlContent: `
+      <div style="font-family:sans-serif;padding:20px;">
+        <h2>Reset Your Password</h2>
 
-    await transporter.sendMail({
-      from: 'ab73fb001@smtp-brevo.com',
-      to: user.email,
-      subject: 'StockFlow Password Reset',
-      html: `...`,
-    });
+        <p>
+          You requested a password reset for your StockFlow account.
+        </p>
 
-    console.log('After sendMail');
+        <a
+          href="${resetLink}"
+          style="
+            display:inline-block;
+            padding:12px 18px;
+            background:#4f8ef7;
+            color:white;
+            text-decoration:none;
+            border-radius:8px;
+          "
+        >
+          Reset Password
+        </a>
+
+        <p style="margin-top:20px;">
+          This link expires in 15 minutes.
+        </p>
+      </div>
+    `,
+      },
+
+      {
+        headers: {
+          'api-key': process.env.BREVO_API_KEY,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
     res.json({
       success: true,
       message: 'Password reset email sent',

@@ -381,22 +381,26 @@ export default function ProductsPage({ warehouse, onBack }) {
   const anyModalOpen = showAdd || showDateHistory || historyProduct || editProduct || transact;
   useEffect(() => {
     const handlePopState = () => {
-      setShowAdd(false);
-      setShowDateHistory(false);
-      setHistoryProduct(null);
-      setEditProduct(null);
-      setTransact(null);
+      if (anyModalOpen) {
+        setShowAdd(false);
+        setShowDateHistory(false);
+        setHistoryProduct(null);
+        setEditProduct(null);
+        setTransact(null);
+      } else {
+        onBack();
+      }
     };
+    window.addEventListener('popstate', handlePopState);
 
     if (anyModalOpen) {
       window.history.pushState({ modal: true }, '');
-      window.addEventListener('popstate', handlePopState);
     }
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [anyModalOpen]);
+  }, [anyModalOpen, onBack]);
   const toast = useToast();
 
   const load = useCallback(async () => {

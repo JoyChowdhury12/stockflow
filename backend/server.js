@@ -542,6 +542,42 @@ app.get('/api/products/:id/history', auth, async (req, res) => {
     });
   }
 });
+app.get('/api/history-by-date', auth, async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    const result = await query(
+      `
+      SELECT
+        products.id AS product_id,
+        products.name AS product_name,
+        products.category,
+        transactions.type,
+        transactions.amount,
+        transactions.quantity_after,
+        transactions.created_at
+      FROM transactions
+      JOIN products
+        ON products.id = transactions.product_id
+      JOIN warehouses
+        ON warehouses.id = products.warehouse_id
+      WHERE warehouses.user_id = $1
+      AND DATE(transactions.created_at) = $2
+      ORDER BY transactions.created_at DESC
+      `,
+      [req.user.id, date]
+    );
+
+    res.json({
+      history: result.rows,
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('StockFlow Backend Running');

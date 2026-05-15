@@ -275,7 +275,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         : 'SMTP KEY MISSING'
     );
     await transporter.sendMail({
-      from: process.env.BREVO_EMAIL, to: user.email,
+      from: 'stockflowadmin@gmail.com', to: user.email,
       subject: 'StockFlow Password Reset',
       html: `
         <div style="font-family:sans-serif;padding:20px;">

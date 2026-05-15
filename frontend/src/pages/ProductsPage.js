@@ -243,7 +243,7 @@ function DateHistoryModal({ warehouse, onClose }) {
     setLoading(true);
 
     try {
-      const data = await api.getHistoryByDate(warehouse.id, date);;
+      const data = await api.getHistoryByDate(warehouse.id, date);
       setHistory(data.history || []);
     } catch (e) {
       console.error(e);
@@ -255,9 +255,7 @@ function DateHistoryModal({ warehouse, onClose }) {
   useEffect(() => {
     loadHistory();
   }, []);
-  const filteredHistory = history.filter(h =>
-    h.product_name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredHistory = history.filter(h => (h.product_name || '').toLowerCase().includes(search.toLowerCase()));
   return (
     <Modal
       title="Date History"
@@ -380,6 +378,25 @@ export default function ProductsPage({ warehouse, onBack }) {
   const [historyProduct, setHistoryProduct] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
   const [transact, setTransact] = useState(null); // { product, type }
+  const anyModalOpen = showAdd || showDateHistory || historyProduct || editProduct || transact;
+  useEffect(() => {
+    const handlePopState = () => {
+      setShowAdd(false);
+      setShowDateHistory(false);
+      setHistoryProduct(null);
+      setEditProduct(null);
+      setTransact(null);
+    };
+
+    if (anyModalOpen) {
+      window.history.pushState({ modal: true }, '');
+      window.addEventListener('popstate', handlePopState);
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [anyModalOpen]);
   const toast = useToast();
 
   const load = useCallback(async () => {

@@ -502,9 +502,33 @@ app.put('/api/user/email', auth, async (req, res) => {
 
 app.put('/api/user/password', auth, async (req, res) => {
   try {
-    const { password } = req.body;
+    const { currentPassword, newPassword } = req.body;
 
-    const hashed = bcrypt.hashSync(password, 10);
+    const result = await query(
+      'SELECT * FROM users WHERE id = $1',
+      [req.user.id]
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
+
+    const isMatch = bcrypt.compareSync(
+      currentPassword,
+      user.password
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        error: 'Current password is incorrect',
+      });
+    }
+
+    const hashed = bcrypt.hashSync(newPassword, 10);
 
     await query(
       `UPDATE users

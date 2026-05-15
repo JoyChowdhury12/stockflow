@@ -61,10 +61,13 @@ export const api = {
       body: { email },
     }),
 
-  changePassword: (password) =>
+  changePassword: (currentPassword, newPassword) =>
     request('/user/password', {
       method: 'PUT',
-      body: { password },
+      body: {
+        currentPassword,
+        newPassword,
+      },
     }),
   updateProfile: (body) => request('/auth/profile', { method: 'PUT', body }),
 

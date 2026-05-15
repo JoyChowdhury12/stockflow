@@ -56,8 +56,16 @@ export default function Navbar({ warehouseName, onBack }) {
       } else if (modal === 'email') {
         updated = await api.changeEmail(form.email);
       } else if (modal === 'password') {
-        updated = await api.changePassword(form.newPassword);
-      } updateUser(updated);
+        updated = await api.changePassword(
+          form.currentPassword,
+          form.newPassword
+        );
+      }
+
+      if (modal !== 'password') {
+        updateUser(updated);
+      }
+
       toast('Profile updated!', 'success');
       closeModal();
     } catch (e) { setError(e.message); }

@@ -183,7 +183,7 @@ export default function Navbar({ warehouseName, onBack }) {
           footer={<><button className="btn btn-secondary" onClick={closeModal}>Cancel</button><button className="btn btn-primary" onClick={handleSave} disabled={loading}>{loading ? 'Saving...' : 'Save'}</button></>}>
           <div className="input-group">
             <label className="input-label">New Name</label>
-            <input className="input" defaultValue={user?.name} onChange={e => setForm({ name: e.target.value })} placeholder="Your name" />
+            <input className="input" defaultValue={user?.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="Your name" />
           </div>
           {error && <div className="error-text">{error}</div>}
         </Modal>

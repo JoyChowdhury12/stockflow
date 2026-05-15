@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './components/Toast';
 import AuthPage from './pages/AuthPage';
@@ -13,7 +13,18 @@ function AppInner() {
     const saved = localStorage.getItem('selectedWarehouse');
     return saved ? JSON.parse(saved) : null;
   });
+  useEffect(() => {
+    const handleBack = () => {
+      localStorage.removeItem('selectedWarehouse');
+      setWarehouse(null);
+    };
 
+    window.addEventListener('popstate', handleBack);
+
+    return () => {
+      window.removeEventListener('popstate', handleBack);
+    };
+  }, []);
   if (loading)
     return (
       <div
@@ -49,7 +60,10 @@ function AppInner() {
   return (
     <WarehousesPage
       onEnter={(wh) => {
+        window.history.pushState({ warehouse: true }, '');
+
         localStorage.setItem('selectedWarehouse', JSON.stringify(wh));
+
         setWarehouse(wh);
       }}
     />

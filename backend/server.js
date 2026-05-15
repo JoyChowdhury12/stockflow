@@ -299,6 +299,12 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         </div>
       `,
     });
+    console.log('EMAIL:', process.env.BREVO_EMAIL);
+    console.log(
+      process.env.BREVO_SMTP_KEY
+        ? 'SMTP KEY FOUND'
+        : 'SMTP KEY MISSING'
+    );
 
     res.json({
       success: true,

@@ -23,6 +23,7 @@ export default function Navbar({ warehouseName, onBack }) {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -34,7 +35,11 @@ export default function Navbar({ warehouseName, onBack }) {
   const openModal = (type) => { setModal(type); setForm({}); setError(''); setMenuOpen(false); };
   const closeModal = () => { setModal(null); setForm({}); setError(''); };
 
-  const handleSave = async () => {
+  const handleSave = () => {
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmedSave = async () => {
     setError(''); setLoading(true);
     try {
       let body = {};
@@ -221,6 +226,41 @@ export default function Navbar({ warehouseName, onBack }) {
             <input className="input" type="password" onChange={e => setForm(p => ({ ...p, newPassword: e.target.value }))} placeholder="••••••••" />
           </div>
           {error && <div className="error-text">{error}</div>}
+        </Modal>
+      )}
+
+      {confirmOpen && (
+        <Modal
+          title="Confirm Changes"
+          onClose={() => setConfirmOpen(false)}
+          footer={
+            <>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setConfirmOpen(false)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setConfirmOpen(false);
+                  handleConfirmedSave();
+                }}
+              >
+                Yes, Continue
+              </button>
+            </>
+          }
+        >
+          <p style={{
+            color: 'var(--text2)',
+            lineHeight: 1.5,
+            fontSize: 14,
+          }}>
+            Are you sure you want to change your {modal}?
+          </p>
         </Modal>
       )}
     </>

@@ -26,8 +26,16 @@ function AppInner() {
         }}
       >
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 40, marginBottom: 16 }}>📦</div>
-
+          <img
+            src="/favicon.png"
+            alt="StockFlow"
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 18,
+              marginBottom: 16,
+            }}
+          />
           <div className="modern-loader"></div>
         </div>
       </div>

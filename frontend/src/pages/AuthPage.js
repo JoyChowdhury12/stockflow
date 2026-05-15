@@ -36,11 +36,19 @@ export default function AuthPage() {
       <div style={{ width: '100%', maxWidth: 400 }}>
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div style={{
-            width: 60, height: 60, borderRadius: 18, margin: '0 auto 16px',
-            background: 'linear-gradient(135deg, #4f8ef7, #7c3aed)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28,
-          }}>📦</div>
+          <img
+            src="/favicon.png"
+            alt="StockFlow"
+            style={{
+              width: 72,
+              height: 72,
+              borderRadius: 20,
+              margin: '0 auto 16px',
+              display: 'block',
+              objectFit: 'cover',
+              boxShadow: '0 10px 30px rgba(79,142,247,0.25)',
+            }}
+          />
           <h1 style={{ fontFamily: 'var(--font-head)', fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px' }}>StockFlow</h1>
           <p style={{ color: 'var(--text2)', fontSize: 14, marginTop: 6 }}>Warehouse management, simplified</p>
         </div>

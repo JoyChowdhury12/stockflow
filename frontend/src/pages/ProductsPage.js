@@ -508,7 +508,18 @@ export default function ProductsPage({ warehouse, onBack }) {
           <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 60 }}><span className="spinner spinner-lg" /></div>
         ) : filtered.length === 0 ? (
           <div className="empty-state">
-            <span style={{ fontSize: 48, opacity: 0.4 }}>📦</span>
+            <img
+              src="/favicon.png"
+              alt="StockFlow"
+              style={{
+                width: 64,
+                height: 64,
+                opacity: 0.5,
+                borderRadius: 18,
+                objectFit: 'cover',
+                marginBottom: 10,
+              }}
+            />
             {search ? <p>No products matching "{search}"</p> : <><p>No products yet</p><small>Add your first product to get started</small><button className="btn btn-primary" onClick={() => setShowAdd(true)} style={{ marginTop: 8 }}>Add Product</button></>}
           </div>
         ) : (

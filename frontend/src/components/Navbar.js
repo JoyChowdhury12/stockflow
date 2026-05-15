@@ -82,11 +82,16 @@ export default function Navbar({ warehouseName, onBack }) {
               <div style={{ fontFamily: 'var(--font-head)', fontWeight: 700, fontSize: 16, lineHeight: 1.2 }}>{warehouseName}</div>
             ) : (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{
-                  width: 30, height: 30, borderRadius: 8,
-                  background: 'linear-gradient(135deg, #4f8ef7, #7c3aed)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
-                }}>📦</div>
+                <img
+                  src="/favicon.png"
+                  alt="StockFlow"
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: 10,
+                    objectFit: 'cover',
+                  }}
+                />
                 <span style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 17, letterSpacing: '-0.3px' }}>StockFlow</span>
               </div>
             )}

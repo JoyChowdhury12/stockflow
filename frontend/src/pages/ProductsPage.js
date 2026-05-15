@@ -231,12 +231,131 @@ function TransactModal({ product, type, onClose, onDone }) {
     </Modal>
   );
 }
+function DateHistoryModal({ onClose }) {
+  const [date, setDate] = useState(
+    new Date().toISOString().split('T')[0]
+  );
 
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
+
+  const loadHistory = async () => {
+    setLoading(true);
+
+    try {
+      const data = await api.getHistoryByDate(date);
+      setHistory(data.history || []);
+    } catch (e) {
+      console.error(e);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  return (
+    <Modal
+      title="Date History"
+      onClose={onClose}
+    >
+      <div className="input-group">
+        <label className="input-label">Select Date</label>
+
+        <input
+          className="input"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+      </div>
+
+      <button
+        className="btn btn-primary"
+        onClick={loadHistory}
+        style={{
+          width: '100%',
+          marginBottom: 16
+        }}
+      >
+        Check History
+      </button>
+
+      {loading ? (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          padding: 30
+        }}>
+          <span className="spinner" />
+        </div>
+      ) : history.length === 0 ? (
+        <div style={{
+          textAlign: 'center',
+          color: 'var(--text3)',
+          padding: '20px 0'
+        }}>
+          No history found
+        </div>
+      ) : (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10
+        }}>
+          {history.map((h, i) => (
+            <div
+              key={i}
+              style={{
+                background: 'var(--card)',
+                border: '1px solid var(--border)',
+                borderRadius: 12,
+                padding: 14
+              }}
+            >
+              <div style={{
+                fontWeight: 700,
+                marginBottom: 6
+              }}>
+                {h.product_name}
+              </div>
+
+              <div style={{
+                color:
+                  h.type === 'in'
+                    ? 'var(--green)'
+                    : 'var(--red)',
+                fontWeight: 600
+              }}>
+                {h.type === 'in' ? '+' : '-'}
+                {h.amount}
+              </div>
+
+              <div style={{
+                fontSize: 12,
+                color: 'var(--text3)',
+                marginTop: 4
+              }}>
+                {new Date(h.created_at).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </Modal>
+  );
+}
 export default function ProductsPage({ warehouse, onBack }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [showAdd, setShowAdd] = useState(false);
+  const [showDateHistory, setShowDateHistory] = useState(false);
   const [historyProduct, setHistoryProduct] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
   const [transact, setTransact] = useState(null); // { product, type }
@@ -315,6 +434,17 @@ export default function ProductsPage({ warehouse, onBack }) {
         </div>
 
         {/* Search + Add */}
+        <button
+          className="btn btn-secondary"
+          onClick={() => setShowDateHistory(true)}
+          style={{
+            width: '100%',
+            marginBottom: 12,
+            justifyContent: 'center'
+          }}
+        >
+          📅 Check History
+        </button>
         <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
           <div style={{ flex: 1, position: 'relative' }}>
             <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 15 }}>🔍</span>
@@ -353,7 +483,11 @@ export default function ProductsPage({ warehouse, onBack }) {
           </div>
         )}
       </div>
-
+      {showDateHistory && (
+        <DateHistoryModal
+          onClose={() => setShowDateHistory(false)}
+        />
+      )}
       {showAdd && <AddProductModal warehouseId={warehouse.id} onClose={() => setShowAdd(false)} onAdd={handleAdd} />}
       {historyProduct && <HistoryModal product={historyProduct} onClose={() => setHistoryProduct(null)} />}
       {editProduct && <EditProductModal product={editProduct} onClose={() => setEditProduct(null)} onSave={handleEdit} />}

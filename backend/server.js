@@ -269,13 +269,17 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
 
     console.log('EMAIL:', process.env.BREVO_EMAIL);
+
     console.log(
       process.env.BREVO_SMTP_KEY
         ? 'SMTP KEY FOUND'
         : 'SMTP KEY MISSING'
     );
+
+    console.log('Before sendMail');
+
     await transporter.sendMail({
-      from: 'stockflowadmin@gmail.com', to: user.email,
+      from: 'ab73fb001@smtp-brevo.com', to: user.email,
       subject: 'StockFlow Password Reset',
       html: `
         <div style="font-family:sans-serif;padding:20px;">
@@ -305,6 +309,16 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         </div>
       `,
     });
+    console.log('Before sendMail');
+
+    await transporter.sendMail({
+      from: 'ab73fb001@smtp-brevo.com',
+      to: user.email,
+      subject: 'StockFlow Password Reset',
+      html: `...`,
+    });
+
+    console.log('After sendMail');
     res.json({
       success: true,
       message: 'Password reset email sent',

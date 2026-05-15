@@ -316,6 +316,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
       {
         headers: {
+          accept: 'application/json',
           'api-key': process.env.BREVO_API_KEY,
           'Content-Type': 'application/json',
         },

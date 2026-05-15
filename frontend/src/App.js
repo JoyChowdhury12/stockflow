@@ -35,7 +35,30 @@ export default function App() {
   return (
     <AuthProvider>
       <ToastProvider>
-        <AppInner />
+        <div
+          style={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            background: 'var(--bg)',
+          }}
+        >
+          <div style={{ flex: 1 }}>
+            <AppInner />
+          </div>
+
+          <div
+            style={{
+              textAlign: 'center',
+              padding: '14px',
+              color: '#777',
+              fontSize: '13px',
+              borderTop: '1px solid rgba(255,255,255,0.05)',
+            }}
+          >
+            © 2026 StockFlow — Developed by Joy Chowdhury
+          </div>
+        </div>
       </ToastProvider>
     </AuthProvider>
   );

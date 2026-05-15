@@ -42,8 +42,16 @@ export default function Navbar({ warehouseName, onBack }) {
         if (!form.name?.trim()) { setError('Name cannot be empty'); setLoading(false); return; }
         body = { name: form.name };
       } else if (modal === 'email') {
-        if (!form.email?.trim()) { setError('Email cannot be empty'); setLoading(false); return; }
-        body = { email: form.email };
+        if (!form.email?.trim() || !form.currentPassword) {
+          setError('Fill all fields');
+          setLoading(false);
+          return;
+        }
+
+        body = {
+          email: form.email,
+          currentPassword: form.currentPassword,
+        };
       } else if (modal === 'password') {
         if (!form.currentPassword || !form.newPassword) { setError('Fill all fields'); setLoading(false); return; }
         if (form.newPassword.length < 6) { setError('New password must be 6+ characters'); setLoading(false); return; }
@@ -54,7 +62,10 @@ export default function Navbar({ warehouseName, onBack }) {
       if (modal === 'name') {
         updated = await api.changeName(form.name);
       } else if (modal === 'email') {
-        updated = await api.changeEmail(form.email);
+        updated = await api.changeEmail(
+          form.email,
+          form.currentPassword
+        );
       } else if (modal === 'password') {
         updated = await api.changePassword(
           form.currentPassword,
@@ -177,7 +188,23 @@ export default function Navbar({ warehouseName, onBack }) {
           footer={<><button className="btn btn-secondary" onClick={closeModal}>Cancel</button><button className="btn btn-primary" onClick={handleSave} disabled={loading}>{loading ? 'Saving...' : 'Save'}</button></>}>
           <div className="input-group">
             <label className="input-label">New Email</label>
-            <input className="input" type="email" defaultValue={user?.email} onChange={e => setForm({ email: e.target.value })} placeholder="new@email.com" />
+            <input className="input" type="email" defaultValue={user?.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} placeholder="new@email.com" />
+          </div><div className="input-group">
+            <label className="input-label">
+              Current Password
+            </label>
+
+            <input
+              className="input"
+              type="password"
+              onChange={e =>
+                setForm(p => ({
+                  ...p,
+                  currentPassword: e.target.value
+                }))
+              }
+              placeholder="••••••••"
+            />
           </div>
           {error && <div className="error-text">{error}</div>}
         </Modal>

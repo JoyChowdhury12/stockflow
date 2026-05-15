@@ -481,14 +481,38 @@ app.put('/api/user/name', auth, async (req, res) => {
 
 app.put('/api/user/email', auth, async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, currentPassword } = req.body;
+
+    const result = await query(
+      'SELECT * FROM users WHERE id = $1',
+      [req.user.id]
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
+
+    const isMatch = bcrypt.compareSync(
+      currentPassword,
+      user.password
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        error: 'Current password is incorrect',
+      });
+    }
 
     const updated = await query(
       `UPDATE users
        SET email = $1
        WHERE id = $2
        RETURNING id, name, email`,
-      [email.toLowerCase(), req.user.id]
+      [email, req.user.id]
     );
 
     res.json(updated.rows[0]);
@@ -528,7 +552,10 @@ app.put('/api/user/password', auth, async (req, res) => {
       });
     }
 
-    const hashed = bcrypt.hashSync(newPassword, 10);
+    const hashed = bcrypt.hashSync(
+      newPassword,
+      10
+    );
 
     await query(
       `UPDATE users

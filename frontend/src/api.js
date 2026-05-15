@@ -55,10 +55,13 @@ export const api = {
       body: { name },
     }),
 
-  changeEmail: (email) =>
+  changeEmail: (email, currentPassword) =>
     request('/user/email', {
       method: 'PUT',
-      body: { email },
+      body: {
+        email,
+        currentPassword,
+      },
     }),
 
   changePassword: (currentPassword, newPassword) =>

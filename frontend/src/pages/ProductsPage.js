@@ -605,9 +605,54 @@ export default function ProductsPage({ warehouse, onBack }) {
         </button>
         <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
           <div style={{ flex: 1, position: 'relative' }}>
-            <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 15 }}>🔍</span>
-            <input className="input" style={{ paddingLeft: 36 }} placeholder="Search products..."
-              value={search} onChange={e => setSearch(e.target.value)} />
+
+            <span
+              style={{
+                position: 'absolute',
+                left: 12,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                fontSize: 15,
+              }}
+            >
+              🔍
+            </span>
+
+            <input
+              className="input"
+              style={{
+                paddingLeft: 36,
+                paddingRight: search ? 40 : 12,
+              }}
+              placeholder="Search products..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                style={{
+                  position: 'absolute',
+                  right: 12,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  border: 'none',
+                  background: 'transparent',
+                  color: '#999',
+                  cursor: 'pointer',
+                  fontSize: 18,
+                  width: 24,
+                  height: 24,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                ✕
+              </button>
+            )}
+
           </div>
           <button className="btn btn-primary" onClick={() => setShowAdd(true)} style={{ flexShrink: 0 }}>
             <span style={{ fontSize: 18 }}>+</span>

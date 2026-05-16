@@ -954,23 +954,48 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
       </div>
 
       {/* Expanded actions */}
-      {expanded && (
-        <div style={{
-          borderTop: '1px solid var(--border)', padding: '10px 16px',
-          display: 'flex', gap: 8, flexWrap: 'wrap',
-          background: 'rgba(0,0,0,0.15)',
-        }}>
+      <div
+        style={{
+          maxHeight: expanded ? '120px' : '0px',
+          opacity: expanded ? 1 : 0,
+
+          overflow: 'hidden',
+
+          transform: expanded
+            ? 'translateY(0)'
+            : 'translateY(-8px)',
+
+          transition:
+            'max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease',
+
+          willChange: 'max-height, opacity, transform',
+        }}
+      >
+        <div
+          style={{
+            borderTop: '1px solid var(--border)',
+            padding: '10px 16px',
+
+            display: 'flex',
+            gap: 8,
+            flexWrap: 'wrap',
+
+            background: 'rgba(0,0,0,0.15)',
+          }}
+        >
           <button className="btn btn-secondary btn-sm" onClick={onHistory}>
             📋 History
           </button>
+
           <button className="btn btn-secondary btn-sm" onClick={onEdit}>
             ✏️ Edit
           </button>
+
           <button className="btn btn-red btn-sm" onClick={onDelete}>
             🗑 Delete
           </button>
         </div>
-      )}
+      </div>
 
     </div>
   );

@@ -235,6 +235,7 @@ export default function WarehousesPage({ onEnter }) {
                   WebkitTapHighlightColor: 'transparent',
                   userSelect: 'none',
                   willChange: 'transform, filter',
+                  outline: 'none',
                 }}
 
                 onClick={() => onEnter(wh)}

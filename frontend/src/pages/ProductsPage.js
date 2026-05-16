@@ -13,6 +13,9 @@ function CategoryTag({ cat }) {
       transition: 'transform 0.12s ease',
       cursor: 'pointer',
       display: 'inline-flex',
+
+      WebkitTapHighlightColor: 'transparent',
+      userSelect: 'none',
     },
 
     onMouseDown: (e) => {
@@ -638,6 +641,9 @@ export default function ProductsPage({ warehouse, onBack }) {
                 gap: 12,
                 transition: 'transform 0.15s ease',
                 cursor: 'pointer',
+
+                WebkitTapHighlightColor: 'transparent',
+                userSelect: 'none',
               }}
 
               onMouseDown={(e) => {

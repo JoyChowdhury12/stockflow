@@ -74,6 +74,11 @@ async function initDb() {
   `);
 
   await query(`
+  ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS deleted BOOLEAN DEFAULT FALSE
+`);
+
+  await query(`
   ALTER TABLE warehouses
   ADD COLUMN IF NOT EXISTS deleted BOOLEAN DEFAULT FALSE
 `);
@@ -85,6 +90,7 @@ async function initDb() {
       name TEXT NOT NULL,
       category TEXT NOT NULL DEFAULT 'Pieces',
       quantity NUMERIC NOT NULL DEFAULT 0,
+          deleted BOOLEAN DEFAULT FALSE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -449,9 +455,9 @@ app.get('/api/warehouses/:whId/products', auth, async (req, res) => {
 
     const warehouseCheck = await query(
       `
-  SELECT * FROM warehouses
-  WHERE id = $1
-  AND deleted = FALSE
+     SELECT * FROM warehouses
+     WHERE id = $1
+     AND deleted = FALSE
   `,
       [req.params.whId]
     );
@@ -464,8 +470,9 @@ app.get('/api/warehouses/:whId/products', auth, async (req, res) => {
 
     const result = await query(
       `SELECT * FROM products
-       WHERE warehouse_id = $1
-       ORDER BY created_at DESC`,
+        WHERE warehouse_id = $1
+        AND deleted = FALSE
+        ORDER BY created_at DESC`,
       [req.params.whId]
     );
 
@@ -606,18 +613,26 @@ app.put('/api/products/:id', auth, async (req, res) => {
 });
 app.delete('/api/products/:id', auth, async (req, res) => {
   try {
-    await query(
-      'DELETE FROM transactions WHERE product_id = $1',
+
+    const deleted = await query(
+      `
+      UPDATE products
+      SET deleted = TRUE
+      WHERE id = $1
+      RETURNING *
+      `,
       [req.params.id]
     );
 
-    await query(
-      'DELETE FROM products WHERE id = $1',
-      [req.params.id]
-    );
+    if (!deleted.rows.length) {
+      return res.status(404).json({
+        error: 'Product not found',
+      });
+    }
 
     res.json({
       success: true,
+      product: deleted.rows[0],
     });
 
   } catch (e) {
@@ -626,6 +641,35 @@ app.delete('/api/products/:id', auth, async (req, res) => {
     });
   }
 });
+
+app.put('/api/products/:id/restore', auth, async (req, res) => {
+  try {
+
+    const restored = await query(
+      `
+      UPDATE products
+      SET deleted = FALSE
+      WHERE id = $1
+      RETURNING *
+      `,
+      [req.params.id]
+    );
+
+    if (!restored.rows.length) {
+      return res.status(404).json({
+        error: 'Product not found',
+      });
+    }
+
+    res.json(restored.rows[0]);
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
 app.delete('/api/warehouses/:id', auth, async (req, res) => {
   try {
 

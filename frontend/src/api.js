@@ -104,6 +104,12 @@ export const api = {
   createProduct: (whId, body) => request(`/warehouses/${whId}/products`, { method: 'POST', body }),
   updateProduct: (id, body) => request(`/products/${id}`, { method: 'PUT', body }),
   deleteProduct: (id) => request(`/products/${id}`, { method: 'DELETE' }),
+
+  restoreProduct: (id) =>
+    request(`/products/${id}/restore`, {
+      method: 'PUT',
+    }),
+
   transact: (id, body) => request(`/products/${id}/transaction`, { method: 'POST', body }),
   getHistory: (id) => request(`/products/${id}/history`),
   getHistoryByDate: (warehouseId, date) =>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import { api } from '../api';
 import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
-import { useToast } from '../components/Toast';
 
 const CATEGORIES = ['Pieces', 'Cartoon', 'Bag', 'Bosta'];
 
@@ -401,7 +401,6 @@ export default function ProductsPage({ warehouse, onBack }) {
       window.removeEventListener('popstate', handlePopState);
     };
   }, [anyModalOpen, onBack]);
-  const toast = useToast();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -421,18 +420,130 @@ export default function ProductsPage({ warehouse, onBack }) {
     setTimeout(async () => {
       try {
         await load();
-        toast('Product added!', 'success');
+        toast.success('Product added!');
       } catch (e) {
-        toast('Failed to refresh products', 'error');
+        toast.error('Failed to refresh products');
       }
     }, 800);
-  }; const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast('Product updated!', 'success'); };
-  const handleTransact = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setTransact(null); toast(transact?.type === 'in' ? 'Stock added!' : 'Stock removed!', 'success'); };
+  }; const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast.success('Product updated!'); };
+  const handleTransact = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setTransact(null); toast.success(transact?.type === 'in' ? 'Stock added!' : 'Stock removed!'); };
+
   const handleDelete = async (product) => {
-    if (!window.confirm(`Are you sure you want to delete "${product.name}"? This action cannot be undone.`)) {
+
+    if (!window.confirm(`Delete "${product.name}"? You can undo this for 8 seconds.`)) {
       return;
-    } try { await api.deleteProduct(product.id); setProducts(p => p.filter(x => x.id !== product.id)); toast('Deleted', 'info'); }
-    catch (e) { toast(e.message, 'error'); }
+    }
+
+    try {
+
+      await api.deleteProduct(product.id);
+
+      setProducts(p =>
+        p.filter(x => x.id !== product.id)
+      );
+
+      toast(
+        (t) => (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              minWidth: 260,
+            }}
+          >
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
+                background: 'rgba(239,68,68,0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 16,
+                flexShrink: 0,
+              }}
+            >
+              🗑
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: 14,
+                  color: 'white',
+                }}
+              >
+                Product deleted
+              </div>
+
+              <div
+                style={{
+                  fontSize: 12,
+                  color: '#aaa',
+                  marginTop: 2,
+                }}
+              >
+                Restore within 8 seconds
+              </div>
+            </div>
+
+            <button
+              onClick={async () => {
+
+                await api.restoreProduct(product.id);
+
+                await load();
+
+                toast.dismiss(t.id);
+
+                toast.success('Product restored');
+
+              }}
+
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '0.85';
+              }}
+
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '1';
+              }}
+
+              style={{
+                border: 'none',
+                background: '#4f8ef7',
+                color: 'white',
+                padding: '8px 14px',
+                borderRadius: 10,
+                cursor: 'pointer',
+                fontWeight: 600,
+                transition: '0.2s',
+              }}
+            >
+              Undo
+            </button>
+          </div>
+        ),
+        {
+          duration: 8000,
+
+          style: {
+            background: '#111827',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: 'white',
+            padding: '14px 16px',
+            borderRadius: '18px',
+          },
+        }
+      );
+
+    } catch (e) {
+
+      toast.error(e.message);
+
+    }
   };
 
   const totalByCategory = (cat) =>

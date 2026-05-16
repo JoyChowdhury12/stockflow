@@ -377,8 +377,8 @@ export default function ProductsPage({ warehouse, onBack }) {
   const [showDateHistory, setShowDateHistory] = useState(false);
   const [historyProduct, setHistoryProduct] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
-  const [transact, setTransact] = useState(null); // { product, type }
-  const anyModalOpen = showAdd || showDateHistory || historyProduct || editProduct || transact;
+  const [deleteProduct, setDeleteProduct] = useState(null); const [transact, setTransact] = useState(null); // { product, type }
+  const anyModalOpen = showAdd || showDateHistory || historyProduct || editProduct || transact || deleteProduct;
   useEffect(() => {
     const handlePopState = () => {
       if (anyModalOpen) {
@@ -429,10 +429,6 @@ export default function ProductsPage({ warehouse, onBack }) {
   const handleTransact = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setTransact(null); toast.success(transact?.type === 'in' ? 'Stock added!' : 'Stock removed!'); };
 
   const handleDelete = async (product) => {
-
-    if (!window.confirm(`Delete "${product.name}"? You can undo this for 8 seconds.`)) {
-      return;
-    }
 
     try {
 
@@ -641,8 +637,7 @@ export default function ProductsPage({ warehouse, onBack }) {
                 onOut={() => setTransact({ product, type: 'out' })}
                 onHistory={() => setHistoryProduct(product)}
                 onEdit={() => setEditProduct(product)}
-                onDelete={() => handleDelete(product)}
-              />
+                onDelete={() => setDeleteProduct(product)} />
             ))}
           </div>
         )}
@@ -657,6 +652,77 @@ export default function ProductsPage({ warehouse, onBack }) {
       {historyProduct && <HistoryModal product={historyProduct} onClose={() => setHistoryProduct(null)} />}
       {editProduct && <EditProductModal product={editProduct} onClose={() => setEditProduct(null)} onSave={handleEdit} />}
       {transact && <TransactModal product={transact.product} type={transact.type} onClose={() => setTransact(null)} onDone={handleTransact} />}
+      {/* Delete Product Modal */}
+      {deleteProduct && (
+        <Modal
+          title="Delete Product"
+          onClose={() => setDeleteProduct(null)}
+
+          footer={
+            <>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setDeleteProduct(null)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="btn btn-red"
+                onClick={async () => {
+
+                  await handleDelete(deleteProduct);
+
+                  setDeleteProduct(null);
+
+                }}
+              >
+                Delete
+              </button>
+            </>
+          }
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 15,
+                color: 'var(--text2)',
+                lineHeight: 1.5,
+              }}
+            >
+              Are you sure you want to delete:
+            </div>
+
+            <div
+              style={{
+                background: 'rgba(239,68,68,0.08)',
+                border: '1px solid rgba(239,68,68,0.15)',
+                padding: '14px',
+                borderRadius: 14,
+                fontWeight: 700,
+                fontSize: 16,
+              }}
+            >
+              📦 {deleteProduct.name}
+            </div>
+
+            <div
+              style={{
+                fontSize: 13,
+                color: '#999',
+              }}
+            >
+              You can undo this action for 8 seconds.
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
@@ -716,6 +782,7 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
           </button>
         </div>
       )}
+
     </div>
   );
 }

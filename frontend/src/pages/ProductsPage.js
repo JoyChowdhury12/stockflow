@@ -639,14 +639,16 @@ export default function ProductsPage({ warehouse, onBack }) {
                   transform: 'translateY(-50%)',
                   border: 'none',
                   background: 'transparent',
-                  color: '#999',
+                  color: 'var(--text3)',
                   cursor: 'pointer',
-                  fontSize: 18,
+                  fontSize: 15,
                   width: 24,
                   height: 24,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  opacity: 0.85,
+                  transition: '0.2s',
                 }}
               >
                 ✕

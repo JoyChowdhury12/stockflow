@@ -121,15 +121,26 @@ export default function WarehousesPage({ onEnter }) {
 
             <button
               onClick={async () => {
-                await api.restoreWarehouse(wh.id);
 
-                await load();
+                try {
 
-                toast.dismiss(t.id);
+                  await api.restoreWarehouse(wh.id);
 
-                toast.success('Warehouse restored');
+                  await load();
+
+                  toast.dismiss(t.id);
+
+                  toast.success('Warehouse restored');
+
+                } catch (e) {
+
+                  toast.error(
+                    'Cannot restore. Warehouse name already exists.'
+                  );
+
+                }
+
               }}
-
               onMouseEnter={(e) => {
                 e.currentTarget.style.opacity = '0.85';
               }}

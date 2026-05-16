@@ -9,6 +9,7 @@ export default function WarehousesPage({ onEnter }) {
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [editWh, setEditWh] = useState(null);
+  const [deleteWh, setDeleteWh] = useState(null);
   const [name, setName] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -62,7 +63,6 @@ export default function WarehousesPage({ onEnter }) {
   };
 
   const handleDelete = async (wh) => {
-    if (!window.confirm(`Delete "${wh.name}"?`)) return;
 
     try {
       await api.deleteWarehouse(wh.id);
@@ -231,7 +231,7 @@ export default function WarehousesPage({ onEnter }) {
                 </div>
                 <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={e => e.stopPropagation()}>
                   <button className="btn btn-secondary btn-sm btn-icon" onClick={() => openEdit(wh)} title="Rename">✏️</button>
-                  <button className="btn btn-red btn-sm btn-icon" onClick={() => handleDelete(wh)} title="Delete">🗑</button>
+                  <button className="btn btn-red btn-sm btn-icon" onClick={() => setDeleteWh(wh)} title="Delete">🗑</button>
                 </div>
               </div>
             ))}
@@ -264,6 +264,78 @@ export default function WarehousesPage({ onEnter }) {
           {error && <div className="error-text">{error}</div>}
         </Modal>
       )}
+      {/* Delete Modal */}
+      {deleteWh && (
+        <Modal
+          title="Delete Warehouse"
+          onClose={() => setDeleteWh(null)}
+
+          footer={
+            <>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setDeleteWh(null)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="btn btn-red"
+                onClick={async () => {
+
+                  await handleDelete(deleteWh);
+
+                  setDeleteWh(null);
+
+                }}
+              >
+                Delete
+              </button>
+            </>
+          }
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 15,
+                color: 'var(--text2)',
+                lineHeight: 1.5,
+              }}
+            >
+              Are you sure you want to delete:
+            </div>
+
+            <div
+              style={{
+                background: 'rgba(239,68,68,0.08)',
+                border: '1px solid rgba(239,68,68,0.15)',
+                padding: '14px',
+                borderRadius: 14,
+                fontWeight: 700,
+                fontSize: 16,
+              }}
+            >
+              🏭 {deleteWh.name}
+            </div>
+
+            <div
+              style={{
+                fontSize: 13,
+                color: '#999',
+              }}
+            >
+              You can undo this action for 8 seconds.
+            </div>
+          </div>
+        </Modal>
+      )}
+
     </div>
   );
 }

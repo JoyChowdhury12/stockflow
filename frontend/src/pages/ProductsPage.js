@@ -795,10 +795,36 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div style={{
-      background: 'var(--card)', border: '1px solid var(--border)',
-      borderRadius: 'var(--radius)', overflow: 'hidden', transition: 'border-color 0.15s',
-    }}>
+    <div
+      style={{
+        background: 'var(--card)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)',
+        overflow: 'hidden',
+        transition: 'transform 0.15s ease, border-color 0.15s ease',
+        cursor: 'pointer',
+      }}
+
+      onMouseDown={(e) => {
+        e.currentTarget.style.transform = 'scale(0.985)';
+      }}
+
+      onMouseUp={(e) => {
+        e.currentTarget.style.transform = 'scale(1)';
+      }}
+
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'scale(1)';
+      }}
+
+      onTouchStart={(e) => {
+        e.currentTarget.style.transform = 'scale(0.985)';
+      }}
+
+      onTouchEnd={(e) => {
+        e.currentTarget.style.transform = 'scale(1)';
+      }}
+    >
       {/* Main row */}
       <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
         {/* Name & category */}

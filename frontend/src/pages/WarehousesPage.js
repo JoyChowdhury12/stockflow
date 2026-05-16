@@ -115,7 +115,7 @@ export default function WarehousesPage({ onEnter }) {
                   marginTop: 2,
                 }}
               >
-                You can restore it within 5 seconds
+                You can restore it within 8 seconds
               </div>
             </div>
 
@@ -123,12 +123,21 @@ export default function WarehousesPage({ onEnter }) {
               onClick={async () => {
                 await api.restoreWarehouse(wh.id);
 
-                load();
+                await load();
 
                 toast.dismiss(t.id);
 
                 toast.success('Warehouse restored');
               }}
+
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '0.85';
+              }}
+
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '1';
+              }}
+
               style={{
                 border: 'none',
                 background: '#4f8ef7',
@@ -137,6 +146,7 @@ export default function WarehousesPage({ onEnter }) {
                 borderRadius: 10,
                 cursor: 'pointer',
                 fontWeight: 600,
+                transition: '0.2s',
               }}
             >
               Undo
@@ -144,7 +154,7 @@ export default function WarehousesPage({ onEnter }) {
           </div>
         ),
         {
-          duration: 5000,
+          duration: 8000,
           style: {
             background: '#111827',
             border: '1px solid rgba(255,255,255,0.08)',

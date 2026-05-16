@@ -554,13 +554,27 @@ select {
 .quantity-animate {
   transition:
     transform 0.2s ease,
-    filter 0.2s ease,
-    color 0.2s ease;
-
-  will-change: transform, filter;
+    filter 0.2s ease;
 }
 
-.quantity-animate:hover {
-  transform: scale(1.06);
-  filter: brightness(1.08);
+.quantity-pop {
+  animation: quantityPop 0.35s ease;
+}
+
+@keyframes quantityPop {
+
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  50% {
+    transform: scale(1.18);
+    filter: brightness(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
 }

@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef
+} from 'react';
 import toast from 'react-hot-toast';
 import { api } from '../api';
 import Navbar from '../components/Navbar';
@@ -917,6 +922,26 @@ export default function ProductsPage({ warehouse, onBack }) {
 function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
   const [expanded, setExpanded] = useState(false);
 
+  const [animateQty, setAnimateQty] = useState(false);
+
+  const prevQtyRef = useRef(product.quantity);
+
+  useEffect(() => {
+
+    if (prevQtyRef.current !== product.quantity) {
+
+      setAnimateQty(true);
+
+      const timer = setTimeout(() => {
+        setAnimateQty(false);
+      }, 350);
+
+      prevQtyRef.current = product.quantity;
+
+      return () => clearTimeout(timer);
+    }
+
+  }, [product.quantity]);
   return (
     <div
       style={{
@@ -967,7 +992,8 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
         {/* Quantity */}
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
           <div
-            className="quantity-animate"
+            className={`quantity-animate ${animateQty ? 'quantity-pop' : ''
+              }`}
 
             style={{
               fontFamily: 'var(--font-head)',

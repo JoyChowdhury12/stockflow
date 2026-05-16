@@ -476,7 +476,7 @@ export default function ProductsPage({ warehouse, onBack }) {
                   color: 'white',
                 }}
               >
-                Product deleted
+                Deleted: {product.name}
               </div>
 
               <div

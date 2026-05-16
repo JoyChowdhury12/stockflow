@@ -214,14 +214,61 @@ export default function WarehousesPage({ onEnter }) {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {warehouses.map(wh => (
-              <div key={wh.id} style={{
-                background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 'var(--radius)',
-                padding: '16px 20px', cursor: 'pointer', transition: 'border-color 0.15s, transform 0.15s',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-              }}
+              <div
+                key={wh.id}
+
+                style={{
+                  background: 'var(--card)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+
+                  padding: '16px 20px',
+                  cursor: 'pointer',
+
+                  transition: 'border-color 0.15s, transform 0.15s ease, filter 0.15s ease',
+
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+
+                  WebkitTapHighlightColor: 'transparent',
+                  userSelect: 'none',
+                  willChange: 'transform, filter',
+                }}
+
                 onClick={() => onEnter(wh)}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = 'var(--accent)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'var(--border)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.filter = 'brightness(1)';
+                }}
+
+                onMouseDown={(e) => {
+                  e.currentTarget.style.transform = 'scale(0.985)';
+                  e.currentTarget.style.filter = 'brightness(0.92)';
+                }}
+
+                onMouseUp={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.filter = 'brightness(1)';
+                }}
+
+                onTouchStart={(e) => {
+                  e.currentTarget.style.transform = 'scale(0.985)';
+                  e.currentTarget.style.filter = 'brightness(0.92)';
+                }}
+
+                onTouchEnd={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.filter = 'brightness(1)';
+                }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, minWidth: 0 }}>
                   <div style={{

@@ -489,14 +489,23 @@ export default function ProductsPage({ warehouse, onBack }) {
             <button
               onClick={async () => {
 
-                await api.restoreProduct(product.id);
+                try {
 
-                await load();
+                  await api.restoreProduct(product.id);
 
-                toast.dismiss(t.id);
+                  await load();
 
-                toast.success('Product restored');
+                  toast.dismiss(t.id);
 
+                  toast.success('Product restored');
+
+                } catch (e) {
+
+                  toast.error(
+                    'Cannot restore. Product name already exists.'
+                  );
+
+                }
               }}
 
               onMouseEnter={(e) => {

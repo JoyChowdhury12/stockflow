@@ -16,6 +16,7 @@ function CategoryTag({ cat }) {
 
       WebkitTapHighlightColor: 'transparent',
       userSelect: 'none',
+      willChange: 'transform, filter',
     },
 
     onMouseDown: (e) => {
@@ -628,6 +629,7 @@ export default function ProductsPage({ warehouse, onBack }) {
             { label: 'Total Bosta', value: totalByCategory('Bosta'), icon: '🧺', color: '#f97316' },
 
           ].map(s => (
+
             <div
               key={s.label}
 
@@ -639,31 +641,37 @@ export default function ProductsPage({ warehouse, onBack }) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 12,
-                transition: 'transform 0.15s ease',
+                transition: 'transform 0.15s ease, filter 0.15s ease',
                 cursor: 'pointer',
 
                 WebkitTapHighlightColor: 'transparent',
                 userSelect: 'none',
+                willChange: 'transform, filter',
               }}
 
               onMouseDown={(e) => {
                 e.currentTarget.style.transform = 'scale(0.985)';
+                e.currentTarget.style.filter = 'brightness(0.92)';
               }}
 
               onMouseUp={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.filter = 'brightness(1)';
               }}
 
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.filter = 'brightness(1)';
               }}
 
               onTouchStart={(e) => {
                 e.currentTarget.style.transform = 'scale(0.985)';
+                e.currentTarget.style.filter = 'brightness(0.92)';
               }}
 
               onTouchEnd={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.filter = 'brightness(1)';
               }}
             >
               <div style={{ fontSize: 24 }}>{s.icon}</div>
@@ -884,28 +892,36 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
         border: '1px solid var(--border)',
         borderRadius: 'var(--radius)',
         overflow: 'hidden',
-        transition: 'transform 0.15s ease, border-color 0.15s ease',
+        transition: 'transform 0.15s ease, border-color 0.15s ease, filter 0.15s ease',
         cursor: 'pointer',
+
+        WebkitTapHighlightColor: 'transparent',
+        userSelect: 'none',
       }}
 
       onMouseDown={(e) => {
         e.currentTarget.style.transform = 'scale(0.985)';
+        e.currentTarget.style.filter = 'brightness(0.92)';
       }}
 
       onMouseUp={(e) => {
         e.currentTarget.style.transform = 'scale(1)';
+        e.currentTarget.style.filter = 'brightness(1)';
       }}
 
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'scale(1)';
+        e.currentTarget.style.filter = 'brightness(1)';
       }}
 
       onTouchStart={(e) => {
         e.currentTarget.style.transform = 'scale(0.985)';
+        e.currentTarget.style.filter = 'brightness(0.92)';
       }}
 
       onTouchEnd={(e) => {
         e.currentTarget.style.transform = 'scale(1)';
+        e.currentTarget.style.filter = 'brightness(1)';
       }}
     >
       {/* Main row */}

@@ -429,7 +429,15 @@ export default function ProductsPage({ warehouse, onBack }) {
   const [historyProduct, setHistoryProduct] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
   const [deleteProduct, setDeleteProduct] = useState(null); const [transact, setTransact] = useState(null); // { product, type }
-  const anyModalOpen = showAdd || showDateHistory || historyProduct || editProduct || transact || deleteProduct;
+  const anyModalOpen =
+    showAdd ||
+    showDateHistory ||
+    historyProduct ||
+    editProduct ||
+    transact ||
+    deleteProduct;
+
+  const [pageVisible, setPageVisible] = useState(false);
   useEffect(() => {
     const handlePopState = () => {
       if (anyModalOpen) {
@@ -459,8 +467,17 @@ export default function ProductsPage({ warehouse, onBack }) {
     setLoading(false);
   }, [warehouse.id]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
 
+    load();
+
+    const timer = setTimeout(() => {
+      setPageVisible(true);
+    }, 20);
+
+    return () => clearTimeout(timer);
+
+  }, [load]);
   const filtered = products.filter(p =>
     ((p?.name || "").toLowerCase()).includes((search || "").toLowerCase()) ||
     ((p?.category || "").toLowerCase()).includes((search || "").toLowerCase())
@@ -608,8 +625,23 @@ export default function ProductsPage({ warehouse, onBack }) {
       .reduce((s, p) => s + parseFloat(p.quantity || 0), 0);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-      <Navbar warehouseName={warehouse.name} onBack={onBack} />
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'var(--bg)',
+
+        opacity: pageVisible ? 1 : 0,
+
+        transform: pageVisible
+          ? 'translateY(0)'
+          : 'translateY(10px)',
+
+        transition:
+          'opacity 0.35s ease, transform 0.35s ease',
+
+        willChange: 'opacity, transform',
+      }}
+    >      <Navbar warehouseName={warehouse.name} onBack={onBack} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '20px 16px 80px' }}>
         {/* Summary cards */}

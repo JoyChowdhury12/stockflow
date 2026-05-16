@@ -13,9 +13,18 @@ export default function WarehousesPage({ onEnter }) {
   const [name, setName] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [pageVisible, setPageVisible] = useState(false);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
 
+    const timer = setTimeout(() => {
+      setPageVisible(true);
+    }, 20);
+
+    return () => clearTimeout(timer);
+
+  }, []);
   const load = async () => {
     setLoading(true);
     try { setWarehouses(await api.getWarehouses()); } catch { }
@@ -182,8 +191,23 @@ export default function WarehousesPage({ onEnter }) {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-      <Navbar />
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'var(--bg)',
+
+        opacity: pageVisible ? 1 : 0,
+
+        transform: pageVisible
+          ? 'translateY(0)'
+          : 'translateY(10px)',
+
+        transition:
+          'opacity 0.35s ease, transform 0.35s ease',
+
+        willChange: 'opacity, transform',
+      }}
+    >      <Navbar />
       <div style={{ maxWidth: 640, margin: '0 auto', padding: '24px 16px' }}>
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>

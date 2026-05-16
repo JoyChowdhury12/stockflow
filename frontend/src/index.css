@@ -550,3 +550,17 @@ select {
   margin: 0 auto;
   box-shadow: 0 0 20px rgba(91, 140, 255, 0.35);
 }
+
+.quantity-animate {
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    color 0.2s ease;
+
+  will-change: transform, filter;
+}
+
+.quantity-animate:hover {
+  transform: scale(1.06);
+  filter: brightness(1.08);
+}

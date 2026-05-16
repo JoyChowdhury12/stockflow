@@ -966,10 +966,25 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
 
         {/* Quantity */}
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{
-            fontFamily: 'var(--font-head)', fontSize: 22, fontWeight: 800, lineHeight: 1,
-            color: product.quantity === 0 ? 'var(--red)' : product.quantity < 10 ? 'var(--amber)' : 'var(--text)',
-          }}>{product.quantity}</div>
+          <div
+            className="quantity-animate"
+
+            style={{
+              fontFamily: 'var(--font-head)',
+              fontSize: 22,
+              fontWeight: 800,
+              lineHeight: 1,
+
+              color:
+                product.quantity === 0
+                  ? 'var(--red)'
+                  : product.quantity < 10
+                    ? 'var(--amber)'
+                    : 'var(--text)',
+            }}
+          >
+            {product.quantity}
+          </div>
           <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>{product.category}</div>
         </div>
 

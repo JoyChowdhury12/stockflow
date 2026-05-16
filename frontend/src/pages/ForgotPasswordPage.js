@@ -52,16 +52,70 @@ export default function ForgotPasswordPage() {
             >
                 <Link
                     to="/"
+
                     style={{
-                        display: 'inline-block',
-                        marginBottom: 18,
-                        color: 'var(--accent)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 8,
+
+                        marginBottom: 20,
+
+                        color: 'var(--text)',
                         textDecoration: 'none',
+
                         fontSize: 14,
-                        fontWeight: 500,
+                        fontWeight: 600,
+
+                        transition:
+                            'transform 0.15s ease, opacity 0.15s ease',
+
+                        WebkitTapHighlightColor: 'transparent',
+                        userSelect: 'none',
+                        willChange: 'transform',
+                    }}
+
+                    onMouseDown={(e) => {
+                        e.currentTarget.style.transform = 'scale(0.96)';
+                        e.currentTarget.style.opacity = '0.75';
+                    }}
+
+                    onMouseUp={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.opacity = '1';
+                    }}
+
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.opacity = '1';
+                    }}
+
+                    onTouchStart={(e) => {
+                        e.currentTarget.style.transform = 'scale(0.96)';
+                        e.currentTarget.style.opacity = '0.75';
+                    }}
+
+                    onTouchEnd={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.opacity = '1';
                     }}
                 >
-                    ← Back to Login
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        style={{ transform: 'translateX(-0.5px)' }}
+                    >
+                        <path
+                            d="M15 18L9 12L15 6"
+                            stroke="currentColor"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+
+                    <span>Back to Login</span>
                 </Link>
                 <h2
                     style={{

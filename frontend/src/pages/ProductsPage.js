@@ -7,18 +7,64 @@ import Modal from '../components/Modal';
 const CATEGORIES = ['Pieces', 'Cartoon', 'Bag', 'Bosta'];
 
 function CategoryTag({ cat }) {
+
+  const commonProps = {
+    style: {
+      transition: 'transform 0.12s ease',
+      cursor: 'pointer',
+      display: 'inline-flex',
+    },
+
+    onMouseDown: (e) => {
+      e.currentTarget.style.transform = 'scale(0.95)';
+    },
+
+    onMouseUp: (e) => {
+      e.currentTarget.style.transform = 'scale(1)';
+    },
+
+    onMouseLeave: (e) => {
+      e.currentTarget.style.transform = 'scale(1)';
+    },
+
+    onTouchStart: (e) => {
+      e.currentTarget.style.transform = 'scale(0.95)';
+    },
+
+    onTouchEnd: (e) => {
+      e.currentTarget.style.transform = 'scale(1)';
+    },
+  };
+
   if (cat === 'Cartoon') {
-    return <span className="tag tag-purple">📦 Cartoon</span>;
+    return (
+      <span className="tag tag-purple" {...commonProps}>
+        📦 Cartoon
+      </span>
+    );
   }
 
   if (cat === 'Bag') {
-    return <span className="tag tag-green">👜 Bag</span>;
-  }
-  if (cat === 'Bosta') {
-    return <span className="tag tag-orange">🧺 Bosta</span>;
+    return (
+      <span className="tag tag-green" {...commonProps}>
+        👜 Bag
+      </span>
+    );
   }
 
-  return <span className="tag tag-blue">🔢 Pieces</span>;
+  if (cat === 'Bosta') {
+    return (
+      <span className="tag tag-orange" {...commonProps}>
+        🧺 Bosta
+      </span>
+    );
+  }
+
+  return (
+    <span className="tag tag-blue" {...commonProps}>
+      🔢 Pieces
+    </span>
+  );
 }
 
 function HistoryModal({ product, onClose }) {
@@ -579,10 +625,41 @@ export default function ProductsPage({ warehouse, onBack }) {
             { label: 'Total Bosta', value: totalByCategory('Bosta'), icon: '🧺', color: '#f97316' },
 
           ].map(s => (
-            <div key={s.label} style={{
-              background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 'var(--radius)',
-              padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12,
-            }}>
+            <div
+              key={s.label}
+
+              style={{
+                background: 'var(--card)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                padding: '14px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                transition: 'transform 0.15s ease',
+                cursor: 'pointer',
+              }}
+
+              onMouseDown={(e) => {
+                e.currentTarget.style.transform = 'scale(0.985)';
+              }}
+
+              onMouseUp={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+
+              onTouchStart={(e) => {
+                e.currentTarget.style.transform = 'scale(0.985)';
+              }}
+
+              onTouchEnd={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
               <div style={{ fontSize: 24 }}>{s.icon}</div>
               <div>
                 <div style={{ fontFamily: 'var(--font-head)', fontSize: 22, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>

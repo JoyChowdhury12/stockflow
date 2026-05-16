@@ -112,13 +112,14 @@ export default function Navbar({ warehouseName, onBack }) {
               onClick={onBack}
 
               style={{
-                width: 42,
-                height: 42,
-                borderRadius: 14,
+                width: 36,
+                height: 36,
 
-                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 999,
 
-                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.06)',
+
+                background: 'rgba(255,255,255,0.03)',
 
                 color: 'white',
 
@@ -126,43 +127,47 @@ export default function Navbar({ warehouseName, onBack }) {
                 alignItems: 'center',
                 justifyContent: 'center',
 
-                fontSize: 20,
+                fontSize: 18,
+                fontWeight: 600,
+
                 cursor: 'pointer',
 
-                backdropFilter: 'blur(10px)',
-
                 transition:
-                  'transform 0.15s ease, filter 0.15s ease',
+                  'transform 0.15s ease, background 0.15s ease',
 
                 WebkitTapHighlightColor: 'transparent',
                 userSelect: 'none',
-                willChange: 'transform, filter',
-                outline: 'none',
+                willChange: 'transform',
               }}
 
               onMouseDown={(e) => {
-                e.currentTarget.style.transform = 'scale(0.92)';
-                e.currentTarget.style.filter = 'brightness(0.9)';
+                e.currentTarget.style.transform = 'scale(0.9)';
+                e.currentTarget.style.background =
+                  'rgba(255,255,255,0.06)';
               }}
 
               onMouseUp={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.filter = 'brightness(1)';
+                e.currentTarget.style.background =
+                  'rgba(255,255,255,0.03)';
               }}
 
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.filter = 'brightness(1)';
+                e.currentTarget.style.background =
+                  'rgba(255,255,255,0.03)';
               }}
 
               onTouchStart={(e) => {
-                e.currentTarget.style.transform = 'scale(0.92)';
-                e.currentTarget.style.filter = 'brightness(0.9)';
+                e.currentTarget.style.transform = 'scale(0.9)';
+                e.currentTarget.style.background =
+                  'rgba(255,255,255,0.06)';
               }}
 
               onTouchEnd={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.filter = 'brightness(1)';
+                e.currentTarget.style.background =
+                  'rgba(255,255,255,0.03)';
               }}
             >
               ←

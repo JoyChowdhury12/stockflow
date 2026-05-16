@@ -112,8 +112,8 @@ export default function Navbar({ warehouseName, onBack }) {
               onClick={onBack}
 
               style={{
-                width: 36,
-                height: 36,
+                width: 34,
+                height: 34,
 
                 borderRadius: 999,
 
@@ -170,7 +170,22 @@ export default function Navbar({ warehouseName, onBack }) {
                   'rgba(255,255,255,0.03)';
               }}
             >
-              ←
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                style={{ transform: 'translateX(-0.5px)' }}
+
+              >
+                <path
+                  d="M15 18L9 12L15 6"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           )}
           <div>

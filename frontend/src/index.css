@@ -558,7 +558,7 @@ select {
 }
 
 .quantity-pop {
-  animation: quantityPop 0.35s ease;
+  animation: quantityPop 0.5s ease;
 }
 
 @keyframes quantityPop {

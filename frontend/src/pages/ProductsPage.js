@@ -934,7 +934,7 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
 
       const timer = setTimeout(() => {
         setAnimateQty(false);
-      }, 350);
+      }, 500);
 
       prevQtyRef.current = product.quantity;
 

@@ -95,6 +95,11 @@ export const api = {
   updateWarehouse: (id, body) => request(`/warehouses/${id}`, { method: 'PUT', body }),
   deleteWarehouse: (id) => request(`/warehouses/${id}`, { method: 'DELETE' }),
 
+  restoreWarehouse: (id) =>
+    request(`/warehouses/${id}/restore`, {
+      method: 'PUT',
+    }),
+
   getProducts: (whId) => request(`/warehouses/${whId}/products`),
   createProduct: (whId, body) => request(`/warehouses/${whId}/products`, { method: 'POST', body }),
   updateProduct: (id, body) => request(`/products/${id}`, { method: 'PUT', body }),

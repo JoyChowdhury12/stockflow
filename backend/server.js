@@ -74,6 +74,11 @@ async function initDb() {
   `);
 
   await query(`
+  ALTER TABLE warehouses
+  ADD COLUMN IF NOT EXISTS deleted BOOLEAN DEFAULT FALSE
+`);
+
+  await query(`
     CREATE TABLE IF NOT EXISTS products (
       id SERIAL PRIMARY KEY,
       warehouse_id INTEGER NOT NULL,
@@ -398,7 +403,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
 app.get('/api/warehouses', auth, async (req, res) => {
   try {
     const result = await query(
-      'SELECT * FROM warehouses WHERE user_id = $1 ORDER BY created_at DESC',
+      'SELECT * FROM warehouses WHERE user_id = $1 AND deleted = FALSE ORDER BY created_at DESC',
       [req.user.id]
     );
 
@@ -441,6 +446,22 @@ app.post('/api/warehouses', auth, async (req, res) => {
 
 app.get('/api/warehouses/:whId/products', auth, async (req, res) => {
   try {
+
+    const warehouseCheck = await query(
+      `
+  SELECT * FROM warehouses
+  WHERE id = $1
+  AND deleted = FALSE
+  `,
+      [req.params.whId]
+    );
+
+    if (warehouseCheck.rows.length === 0) {
+      return res.status(404).json({
+        error: 'Warehouse not found',
+      });
+    }
+
     const result = await query(
       `SELECT * FROM products
        WHERE warehouse_id = $1
@@ -607,25 +628,13 @@ app.delete('/api/products/:id', auth, async (req, res) => {
 });
 app.delete('/api/warehouses/:id', auth, async (req, res) => {
   try {
-    const products = await query(
-      'SELECT id FROM products WHERE warehouse_id = $1',
-      [req.params.id]
-    );
-
-    for (const product of products.rows) {
-      await query(
-        'DELETE FROM transactions WHERE product_id = $1',
-        [product.id]
-      );
-    }
 
     await query(
-      'DELETE FROM products WHERE warehouse_id = $1',
-      [req.params.id]
-    );
-
-    await query(
-      'DELETE FROM warehouses WHERE id = $1',
+      `
+      UPDATE warehouses
+      SET deleted = TRUE
+      WHERE id = $1
+      `,
       [req.params.id]
     );
 
@@ -639,6 +648,30 @@ app.delete('/api/warehouses/:id', auth, async (req, res) => {
     });
   }
 });
+
+app.put('/api/warehouses/:id/restore', auth, async (req, res) => {
+  try {
+
+    await query(
+      `
+      UPDATE warehouses
+      SET deleted = FALSE
+      WHERE id = $1
+      `,
+      [req.params.id]
+    );
+
+    res.json({
+      success: true,
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
 app.put('/api/user/name', auth, async (req, res) => {
   try {
     const { name } = req.body;

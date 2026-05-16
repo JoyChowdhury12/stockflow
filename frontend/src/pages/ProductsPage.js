@@ -373,6 +373,7 @@ export default function ProductsPage({ warehouse, onBack }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const searchRef = React.useRef(null);
   const [showAdd, setShowAdd] = useState(false);
   const [showDateHistory, setShowDateHistory] = useState(false);
   const [historyProduct, setHistoryProduct] = useState(null);
@@ -619,6 +620,7 @@ export default function ProductsPage({ warehouse, onBack }) {
             </span>
 
             <input
+              ref={searchRef}
               className="input"
               style={{
                 paddingLeft: 36,
@@ -631,7 +633,13 @@ export default function ProductsPage({ warehouse, onBack }) {
 
             {search && (
               <button
-                onClick={() => setSearch('')}
+                onClick={() => {
+
+                  setSearch('');
+
+                  searchRef.current?.focus();
+
+                }}
                 style={{
                   position: 'absolute',
                   right: 12,

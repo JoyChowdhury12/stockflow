@@ -8,7 +8,7 @@ function Avatar({ name }) {
   const initials = name ? name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) : '?';
   return (
     <div style={{
-      width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #4f8ef7, #7c3aed)',
+      width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg, #4f8ef7, #7c3aed)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       fontSize: 14, fontWeight: 700, color: '#fff', flexShrink: 0,
     }}>{initials}</div>
@@ -103,10 +103,10 @@ export default function Navbar({ warehouseName, onBack }) {
         position: 'sticky', top: 0, zIndex: 50,
         background: 'rgba(15,17,23,0.92)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--border)', padding: '0 16px',
-        height: 58, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         {/* Left */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           {onBack && (
             <button
               onClick={onBack}
@@ -127,7 +127,7 @@ export default function Navbar({ warehouseName, onBack }) {
                 alignItems: 'center',
                 justifyContent: 'center',
 
-                fontSize: 18,
+                fontSize: 17,
                 fontWeight: 600,
 
                 cursor: 'pointer',
@@ -175,7 +175,7 @@ export default function Navbar({ warehouseName, onBack }) {
           )}
           <div>
             {onBack ? (
-              <div style={{ fontFamily: 'var(--font-head)', fontWeight: 700, fontSize: 16, lineHeight: 1.2 }}>{warehouseName}</div>
+              <div style={{ fontFamily: 'var(--font-head)', fontWeight: 700, fontSize: 17, lineHeight: 1.2 }}>{warehouseName}</div>
             ) : (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <img

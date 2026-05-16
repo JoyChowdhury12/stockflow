@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
-import { useToast } from '../components/Toast';
+import toast from 'react-hot-toast';
 
 export default function WarehousesPage({ onEnter }) {
   const [warehouses, setWarehouses] = useState([]);
@@ -12,7 +12,6 @@ export default function WarehousesPage({ onEnter }) {
   const [name, setName] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const toast = useToast();
 
   useEffect(() => { load(); }, []);
 
@@ -42,7 +41,7 @@ export default function WarehousesPage({ onEnter }) {
 
       setShowCreate(false);
 
-      toast('Warehouse created!', 'success');
+      toast.success('Warehouse created!');
     } catch (e) {
       setError(e.message);
     }
@@ -57,18 +56,47 @@ export default function WarehousesPage({ onEnter }) {
       const updated = await api.updateWarehouse(editWh.id, { name: name.trim() });
       setWarehouses(p => p.map(w => w.id === editWh.id ? updated : w));
       setEditWh(null);
-      toast('Warehouse renamed!', 'success');
+      toast.success('Warehouse renamed!');
     } catch (e) { setError(e.message); }
     setSaving(false);
   };
 
   const handleDelete = async (wh) => {
-    if (!window.confirm(`Delete "${wh.name}"? All products will be lost.`)) return;
+    if (!window.confirm(`Delete "${wh.name}"?`)) return;
+
     try {
       await api.deleteWarehouse(wh.id);
-      setWarehouses(p => p.filter(w => w.id !== wh.id));
-      toast('Warehouse deleted', 'info');
-    } catch (e) { toast(e.message, 'error'); }
+
+      setWarehouses(p =>
+        p.filter(w => w.id !== wh.id)
+      );
+
+      toast((t) => (
+        <div className="flex items-center gap-3">
+          <span>Warehouse deleted</span>
+
+          <button
+            onClick={async () => {
+              await api.restoreWarehouse(wh.id);
+
+              load();
+
+              toast.dismiss(t.id);
+
+              toast.success('Warehouse restored');
+            }}
+            className="rounded-lg bg-white/20 px-3 py-1 text-sm"
+          >
+            Undo
+          </button>
+        </div>
+      ), {
+        duration: 5000,
+      });
+
+    } catch (e) {
+      toast.error(e.message);
+    }
   };
 
   return (

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+import { Toaster } from 'react-hot-toast';
+
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './components/Toast';
 
@@ -77,6 +79,8 @@ export default function App() {
   return (
     <AuthProvider>
       <ToastProvider>
+        <Toaster position="bottom-center" />
+
         <div
           style={{
             minHeight: '100vh',

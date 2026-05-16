@@ -105,7 +105,7 @@ export default function WarehousesPage({ onEnter }) {
                   color: 'white',
                 }}
               >
-                Warehouse deleted
+                Deleted: {wh.name}
               </div>
 
               <div

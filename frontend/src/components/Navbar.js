@@ -108,7 +108,65 @@ export default function Navbar({ warehouseName, onBack }) {
         {/* Left */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {onBack && (
-            <button className="btn btn-ghost btn-icon" onClick={onBack} style={{ fontSize: 18 }}>←</button>
+            <button
+              onClick={onBack}
+
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: 14,
+
+                border: '1px solid rgba(255,255,255,0.08)',
+
+                background: 'rgba(255,255,255,0.04)',
+
+                color: 'white',
+
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+
+                fontSize: 20,
+                cursor: 'pointer',
+
+                backdropFilter: 'blur(10px)',
+
+                transition:
+                  'transform 0.15s ease, filter 0.15s ease',
+
+                WebkitTapHighlightColor: 'transparent',
+                userSelect: 'none',
+                willChange: 'transform, filter',
+                outline: 'none',
+              }}
+
+              onMouseDown={(e) => {
+                e.currentTarget.style.transform = 'scale(0.92)';
+                e.currentTarget.style.filter = 'brightness(0.9)';
+              }}
+
+              onMouseUp={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.filter = 'brightness(1)';
+              }}
+
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.filter = 'brightness(1)';
+              }}
+
+              onTouchStart={(e) => {
+                e.currentTarget.style.transform = 'scale(0.92)';
+                e.currentTarget.style.filter = 'brightness(0.9)';
+              }}
+
+              onTouchEnd={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.filter = 'brightness(1)';
+              }}
+            >
+              ←
+            </button>
           )}
           <div>
             {onBack ? (

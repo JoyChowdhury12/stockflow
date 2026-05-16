@@ -71,28 +71,89 @@ export default function WarehousesPage({ onEnter }) {
         p.filter(w => w.id !== wh.id)
       );
 
-      toast((t) => (
-        <div className="flex items-center gap-3">
-          <span>Warehouse deleted</span>
-
-          <button
-            onClick={async () => {
-              await api.restoreWarehouse(wh.id);
-
-              load();
-
-              toast.dismiss(t.id);
-
-              toast.success('Warehouse restored');
+      toast(
+        (t) => (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 14,
+              minWidth: 280,
             }}
-            className="rounded-lg bg-white/20 px-3 py-1 text-sm"
           >
-            Undo
-          </button>
-        </div>
-      ), {
-        duration: 5000,
-      });
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: 12,
+                background: 'rgba(239,68,68,0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 18,
+                flexShrink: 0,
+              }}
+            >
+              🗑
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: 14,
+                  color: 'white',
+                }}
+              >
+                Warehouse deleted
+              </div>
+
+              <div
+                style={{
+                  fontSize: 12,
+                  color: '#aaa',
+                  marginTop: 2,
+                }}
+              >
+                You can restore it within 5 seconds
+              </div>
+            </div>
+
+            <button
+              onClick={async () => {
+                await api.restoreWarehouse(wh.id);
+
+                load();
+
+                toast.dismiss(t.id);
+
+                toast.success('Warehouse restored');
+              }}
+              style={{
+                border: 'none',
+                background: '#4f8ef7',
+                color: 'white',
+                padding: '8px 14px',
+                borderRadius: 10,
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
+            >
+              Undo
+            </button>
+          </div>
+        ),
+        {
+          duration: 5000,
+          style: {
+            background: '#111827',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: 'white',
+            padding: '14px 16px',
+            borderRadius: '18px',
+          },
+        }
+      );
 
     } catch (e) {
       toast.error(e.message);

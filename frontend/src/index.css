@@ -572,8 +572,8 @@ select {
 }
 
 .premium-back-btn {
-  width: 45px;
-  height: 45px;
+  width: 36px;
+  height: 36px;
 
   border: none;
   outline: none;
@@ -607,4 +607,10 @@ select {
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
   flex-shrink: 0;
+}
+
+.premium-back-btn svg {
+  width: 15px;
+  height: 15px;
+  transform: translateX(-1px);
 }

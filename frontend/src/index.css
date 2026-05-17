@@ -614,3 +614,20 @@ select {
   height: 16px;
   transform: translateX(-1px);
 }
+
+.back-link-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+
+  color: var(--accent);
+
+  margin-bottom: 18px;
+}
+
+.back-link-custom span {
+  font-size: 14px;
+  font-weight: 500;
+}

@@ -52,16 +52,30 @@ export default function ForgotPasswordPage() {
             >
                 <Link
                     to="/"
-                    style={{
-                        display: 'inline-block',
-                        marginBottom: 18,
-                        color: 'var(--accent)',
-                        textDecoration: 'none',
-                        fontSize: 14,
-                        fontWeight: 500,
-                    }}
+                    className="back-link-custom"
                 >
-                    ← Back to Login
+                    <button
+                        className="premium-back-btn"
+                        type="button"
+                    >
+                        <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M15 18L9 12L15 6"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
+
+                    <span>Back to Login</span>
                 </Link>
                 <h2
                     style={{

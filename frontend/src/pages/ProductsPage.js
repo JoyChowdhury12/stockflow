@@ -934,13 +934,28 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
 
         {/* Quantity */}
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{
-            fontFamily: 'var(--font-head)', fontSize: 22, fontWeight: 800, lineHeight: 1,
-            color: product.quantity === 0 ? 'var(--red)' : product.quantity < 10 ? 'var(--amber)' : 'var(--text)',
-          }}>{product.quantity}</div>
-          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>{product.category}</div>
-        </div>
+          <div
+            className="quantity-pop"
+            style={{
+              fontFamily: 'var(--font-head)',
+              fontSize: 22,
+              fontWeight: 800,
+              lineHeight: 1,
+              color:
+                product.quantity === 0
+                  ? 'var(--red)'
+                  : product.quantity < 10
+                    ? 'var(--amber)'
+                    : 'var(--text)',
+            }}
+          >
+            {product.quantity}
+          </div>
 
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
+            {product.category}
+          </div>
+        </div>
         {/* In / Out */}
         <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
           <button className="btn btn-green btn-sm" onClick={onIn} title="Stock In">↑ In</button>

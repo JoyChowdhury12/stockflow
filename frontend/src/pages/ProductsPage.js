@@ -477,8 +477,35 @@ export default function ProductsPage({ warehouse, onBack }) {
       }
     }, 800);
   }; const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast.success('Product updated!'); };
-  const handleTransact = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setTransact(null); toast.success(transact?.type === 'in' ? 'Stock added!' : 'Stock removed!'); };
+  const handleTransact = (updated) => {
 
+    setProducts(p =>
+      p.map(x =>
+        x.id === updated.id
+          ? { ...updated, animate: true }
+          : { ...x, animate: false }
+      )
+    );
+
+    setTimeout(() => {
+
+      setProducts(p =>
+        p.map(x => ({
+          ...x,
+          animate: false
+        }))
+      );
+
+    }, 500);
+
+    setTransact(null);
+
+    toast.success(
+      transact?.type === 'in'
+        ? 'Stock added!'
+        : 'Stock removed!'
+    );
+  };
   const handleDelete = async (product) => {
 
     try {
@@ -886,20 +913,6 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
 
   const [expanded, setExpanded] = useState(false);
 
-  const [animate, setAnimate] = useState(false);
-
-  useEffect(() => {
-
-    setAnimate(true);
-
-    const timer = setTimeout(() => {
-      setAnimate(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-
-  }, [product.quantity]);
-
   return (
     <div
       style={{
@@ -950,7 +963,7 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
         {/* Quantity */}
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
           <div
-            className={animate ? "quantity-pop" : ""} style={{
+            className={product.animate ? "quantity-pop" : ""} style={{
               fontFamily: 'var(--font-head)',
               fontSize: 22,
               fontWeight: 800,

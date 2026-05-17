@@ -883,7 +883,22 @@ export default function ProductsPage({ warehouse, onBack }) {
 }
 
 function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
+
   const [expanded, setExpanded] = useState(false);
+
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+
+    setAnimate(true);
+
+    const timer = setTimeout(() => {
+      setAnimate(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+
+  }, [product.quantity]);
 
   return (
     <div
@@ -935,8 +950,7 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
         {/* Quantity */}
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
           <div
-            className="quantity-pop"
-            style={{
+            className={animate ? "quantity-pop" : ""} style={{
               fontFamily: 'var(--font-head)',
               fontSize: 22,
               fontWeight: 800,

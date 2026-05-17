@@ -446,26 +446,31 @@ export default function ProductsPage({ warehouse, onBack }) {
   const [newlyAddedId, setNewlyAddedId] = useState(null);
 
   useEffect(() => {
+
     const handlePopState = () => {
+
       if (anyModalOpen) {
+
         setShowAdd(false);
         setShowDateHistory(false);
         setHistoryProduct(null);
         setEditProduct(null);
         setTransact(null);
+        setDeleteProduct(null);
+
       } else {
+
         onBack();
+
       }
     };
-    window.addEventListener('popstate', handlePopState);
 
-    if (anyModalOpen) {
-      window.history.pushState({ modal: true }, '');
-    }
+    window.addEventListener('popstate', handlePopState);
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
+
   }, [anyModalOpen, onBack]);
 
   const load = useCallback(async () => {

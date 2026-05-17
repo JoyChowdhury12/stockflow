@@ -108,7 +108,12 @@ export default function Navbar({ warehouseName, onBack }) {
         {/* Left */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {onBack && (
-            <button className="btn btn-ghost btn-icon" onClick={onBack} style={{ fontSize: 18 }}>←</button>
+            <button
+              onClick={onBack}
+              className="premium-back-btn"
+            >
+              ←
+            </button>
           )}
           <div>
             {onBack ? (

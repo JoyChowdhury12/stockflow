@@ -570,3 +570,54 @@ select {
     transform: scale(1);
   }
 }
+
+.premium-back-btn {
+  width: 52px;
+  height: 52px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(145deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02));
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(12px);
+
+  color: #fff;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: all .25s ease;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  flex-shrink: 0;
+}
+
+.premium-back-btn:hover {
+  transform: translateX(-3px) scale(1.03);
+
+  background:
+    linear-gradient(145deg,
+      rgba(255, 255, 255, 0.09),
+      rgba(255, 255, 255, 0.03));
+}
+
+.premium-back-btn:active {
+  transform: scale(.96);
+}

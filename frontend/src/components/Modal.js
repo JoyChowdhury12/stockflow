@@ -2,9 +2,25 @@ import React, { useEffect } from 'react';
 
 export default function Modal({ title, onClose, children, footer }) {
   useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+
+    const handler = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+
     document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
+
+    // LOCK BACKGROUND SCROLL
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+
+      document.removeEventListener('keydown', handler);
+
+      // RESTORE SCROLL
+      document.body.style.overflow = '';
+
+    };
+
   }, [onClose]);
 
   return (

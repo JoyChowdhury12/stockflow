@@ -572,8 +572,8 @@ select {
 }
 
 .premium-back-btn {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
 
   border: none;
   outline: none;
@@ -610,7 +610,7 @@ select {
 }
 
 .premium-back-btn svg {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   transform: translateX(-1px);
 }

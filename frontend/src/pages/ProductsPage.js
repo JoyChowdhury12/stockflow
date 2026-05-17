@@ -1055,12 +1055,40 @@ function ProductRow({
 
         {/* In / Out */}
         <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-          <button className="btn btn-green btn-sm" onClick={onIn} title="Stock In">↑ In</button>
-          <button className="btn btn-red btn-sm" onClick={onOut} title="Stock Out">↓ Out</button>
+          <button
+            type="button"
+            className="btn btn-green btn-sm"
+            title="Stock In"
+            onClick={(e) => {
+              e.stopPropagation();
+              onIn();
+            }}
+          >
+            ↑ In
+          </button>
+          <button
+            type="button"
+            className="btn btn-red btn-sm"
+            title="Stock Out"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOut();
+            }}
+          >
+            ↓ Out
+          </button>
         </div>
 
         {/* More actions toggle */}
-        <button className="btn btn-ghost btn-icon btn-sm" onClick={() => setExpanded(p => !p)} title="More">
+        <button
+          type="button"
+          className="btn btn-ghost btn-icon btn-sm"
+          title="More"
+          onClick={(e) => {
+            e.stopPropagation();
+            setExpanded(p => !p);
+          }}
+        >
           {expanded ? '▲' : '▼'}
         </button>
       </div>
@@ -1095,15 +1123,36 @@ function ProductRow({
             background: 'rgba(0,0,0,0.15)',
           }}
         >
-          <button className="btn btn-secondary btn-sm" onClick={onHistory}>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onHistory();
+            }}
+          >
             📋 History
           </button>
 
-          <button className="btn btn-secondary btn-sm" onClick={onEdit}>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
+          >
             ✏️ Edit
           </button>
 
-          <button className="btn btn-red btn-sm" onClick={onDelete}>
+          <button
+            type="button"
+            className="btn btn-red btn-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+          >
             🗑 Delete
           </button>
         </div>

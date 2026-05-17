@@ -609,10 +609,12 @@ select {
   flex-shrink: 0;
 }
 
-.premium-back-btn svg {
-  width: 16px;
-  height: 16px;
-  transform: translateX(-1px);
+.simple-back-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--accent);
 }
 
 .back-link-custom {

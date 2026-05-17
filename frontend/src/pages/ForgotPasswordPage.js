@@ -54,13 +54,11 @@ export default function ForgotPasswordPage() {
                     to="/"
                     className="back-link-custom"
                 >
-                    <button
-                        className="premium-back-btn"
-                        type="button"
-                    >
+                    <div className="simple-back-icon">
+
                         <svg
-                            width="15"
-                            height="15"
+                            width="16"
+                            height="16"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +71,7 @@ export default function ForgotPasswordPage() {
                                 strokeLinejoin="round"
                             />
                         </svg>
-                    </button>
+                    </div>
 
                     <span>Back to Login</span>
                 </Link>

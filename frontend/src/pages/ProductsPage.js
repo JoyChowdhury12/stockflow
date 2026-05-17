@@ -466,17 +466,51 @@ export default function ProductsPage({ warehouse, onBack }) {
     ((p?.category || "").toLowerCase()).includes((search || "").toLowerCase())
   );
   const handleAdd = async () => {
+
     setShowAdd(false);
 
     setTimeout(async () => {
+
       try {
-        await load();
+
+        const latestProducts = await api.getProducts(warehouse.id);
+
+        const newestProduct = latestProducts[0];
+
+        const animatedProduct = {
+          ...newestProduct,
+          animate: true
+        };
+
+        setProducts([
+          animatedProduct,
+          ...latestProducts.slice(1)
+        ]);
+
+        setTimeout(() => {
+
+          setProducts(prev =>
+            prev.map(p => ({
+              ...p,
+              animate: false
+            }))
+          );
+
+        }, 500);
+
         toast.success('Product added!');
+
       } catch (e) {
+
         toast.error('Failed to refresh products');
+
       }
-    }, 800);
-  }; const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast.success('Product updated!'); };
+
+    }, 400);
+
+  };
+
+  const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast.success('Product updated!'); };
   const handleTransact = (updated) => {
 
     setProducts(p =>
@@ -915,6 +949,7 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
 
   return (
     <div
+      className={product.animate ? "product-enter" : ""}
       style={{
         background: 'var(--card)',
         border: '1px solid var(--border)',

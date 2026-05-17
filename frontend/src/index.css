@@ -633,3 +633,25 @@ select {
   font-size: 14px;
   font-weight: 500;
 }
+
+.product-enter {
+  animation: productEnter 0.45s ease;
+}
+
+@keyframes productEnter {
+
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

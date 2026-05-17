@@ -443,6 +443,8 @@ export default function ProductsPage({ warehouse, onBack }) {
     deleteProduct;
 
   const [pageVisible, setPageVisible] = useState(false);
+  const [newlyAddedId, setNewlyAddedId] = useState(null);
+
   useEffect(() => {
     const handlePopState = () => {
       if (anyModalOpen) {
@@ -488,17 +490,43 @@ export default function ProductsPage({ warehouse, onBack }) {
     ((p?.category || "").toLowerCase()).includes((search || "").toLowerCase())
   );
   const handleAdd = async () => {
+
     setShowAdd(false);
 
     setTimeout(async () => {
+
       try {
-        await load();
+
+        const oldIds = products.map(p => p.id);
+
+        const updatedProducts = await api.getProducts(warehouse.id);
+
+        setProducts(updatedProducts);
+
+        const newest = updatedProducts.find(
+          p => !oldIds.includes(p.id)
+        );
+
+        if (newest) {
+
+          setNewlyAddedId(newest.id);
+
+          setTimeout(() => {
+            setNewlyAddedId(null);
+          }, 700);
+        }
+
         toast.success('Product added!');
+
       } catch (e) {
+
         toast.error('Failed to refresh products');
+
       }
+
     }, 800);
-  }; const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast.success('Product updated!'); };
+  };
+  const handleEdit = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setEditProduct(null); toast.success('Product updated!'); };
   const handleTransact = (updated) => { setProducts(p => p.map(x => x.id === updated.id ? updated : x)); setTransact(null); toast.success(transact?.type === 'in' ? 'Stock added!' : 'Stock removed!'); };
 
   const handleDelete = async (product) => {
@@ -824,9 +852,13 @@ export default function ProductsPage({ warehouse, onBack }) {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {filtered.map(product => (
-              <ProductRow key={product.id} product={product}
-                onIn={() => setTransact({ product, type: 'in' })}
-                onOut={() => setTransact({ product, type: 'out' })}
+              <ProductRow
+                key={product.id}
+                product={product}
+
+                isNew={newlyAddedId === product.id}
+
+                onIn={() => setTransact({ product, type: 'in' })} onOut={() => setTransact({ product, type: 'out' })}
                 onHistory={() => setHistoryProduct(product)}
                 onEdit={() => setEditProduct(product)}
                 onDelete={() => setDeleteProduct(product)} />
@@ -919,7 +951,15 @@ export default function ProductsPage({ warehouse, onBack }) {
   );
 }
 
-function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
+function ProductRow({
+  product,
+  onIn,
+  onOut,
+  onHistory,
+  onEdit,
+  onDelete,
+  isNew
+}) {
   const [expanded, setExpanded] = useState(false);
 
   const [animateQty, setAnimateQty] = useState(false);
@@ -944,6 +984,7 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
   }, [product.quantity]);
   return (
     <div
+      className={isNew ? 'new-product-pop' : ''}
       style={{
         background: 'var(--card)',
         border: '1px solid var(--border)',

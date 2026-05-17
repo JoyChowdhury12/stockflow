@@ -591,8 +591,8 @@ select {
 
   color: #fff;
 
-  font-size: 24px;
-  font-weight: 700;
+  padding: 0;
+  overflow: hidden;
 
   display: flex;
   align-items: center;
@@ -607,17 +607,4 @@ select {
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
   flex-shrink: 0;
-}
-
-.premium-back-btn:hover {
-  transform: translateX(-3px) scale(1.03);
-
-  background:
-    linear-gradient(145deg,
-      rgba(255, 255, 255, 0.09),
-      rgba(255, 255, 255, 0.03));
-}
-
-.premium-back-btn:active {
-  transform: scale(.96);
 }

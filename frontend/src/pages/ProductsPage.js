@@ -855,9 +855,7 @@ export default function ProductsPage({ warehouse, onBack }) {
               <ProductRow
                 key={product.id}
                 product={product}
-
                 isNew={newlyAddedId === product.id}
-
                 onIn={() => setTransact({ product, type: 'in' })} onOut={() => setTransact({ product, type: 'out' })}
                 onHistory={() => setHistoryProduct(product)}
                 onEdit={() => setEditProduct(product)}

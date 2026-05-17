@@ -204,14 +204,11 @@
 
     justify-content: center;
 
-    align-items: flex-start;
+    align-items: center;
 
     overflow-y: auto;
 
-    padding-top: 80px;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 40px;
+    padding: 16px;
 
     animation: fadeIn 0.15s ease;
   }

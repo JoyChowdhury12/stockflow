@@ -38,7 +38,7 @@ async function request(path, options = {}) {
     return data;
   } catch (error) {
     if (error.message === 'Failed to fetch') {
-      throw new Error('Cannot connect to backend server.');
+      throw new Error("You're offline. Please reconnect and try again.");
     }
 
     throw error;

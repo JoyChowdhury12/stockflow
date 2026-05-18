@@ -552,7 +552,7 @@ select {
 }
 
 .quantity-pop {
-  animation: quantityPop 0.35s ease;
+  animation: quantityPop 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes quantityPop {
@@ -562,7 +562,7 @@ select {
   }
 
   50% {
-    transform: scale(1.15);
+    transform: scale(1.35);
     opacity: 1;
   }
 

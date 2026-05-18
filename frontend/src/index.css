@@ -552,7 +552,7 @@ select {
 }
 
 .quantity-pop {
-  animation: quantityPop 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: quantityPop 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 
   will-change: transform;
   transform: translateZ(0);

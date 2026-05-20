@@ -52,7 +52,7 @@ export default function AuthPage() {
             }}
           />
           <h1 style={{ fontFamily: 'var(--font-head)', fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px' }}>StockFlow</h1>
-          <p style={{ color: 'var(--text2)', fontSize: 14, marginTop: 6 }}>Better Inventory Begins Here</p>
+          <p style={{ color: 'var(--text2)', fontSize: 14, marginTop: 6 }}>Better Inventory</p>
         </div>
 
         <div className="card">

@@ -217,6 +217,9 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
 function TransactModal({ product, type, onClose, onDone }) {
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
+  const [transactionDate, setTransactionDate] = useState(
+    new Date().toISOString().slice(0, 16)
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -225,8 +228,12 @@ function TransactModal({ product, type, onClose, onDone }) {
     if (!qty || qty <= 0) { setError('Enter a valid amount'); return; }
     setSaving(true);
     try {
-      const updated = await api.transact(product.id, { type, amount: qty, note });
-      onDone(updated);
+      const updated = await api.transact(product.id, {
+        type,
+        amount: qty,
+        note,
+        created_at: new Date(transactionDate).toISOString()
+      }); onDone(updated);
     } catch (e) { setError(e.message); }
     setSaving(false);
   };
@@ -274,8 +281,27 @@ function TransactModal({ product, type, onClose, onDone }) {
         </div>
       )}
       <div className="input-group">
+        <label className="input-label">
+          Transaction Date & Time
+        </label>
+
+        <input
+          type="datetime-local"
+          className="input"
+          value={transactionDate}
+          onChange={(e) => setTransactionDate(e.target.value)}
+        />
+      </div>
+
+      <div className="input-group">
         <label className="input-label">Note (optional)</label>
-        <input className="input" placeholder="e.g. Received from supplier" value={note} onChange={e => setNote(e.target.value)} />
+
+        <input
+          className="input"
+          placeholder="e.g. Received from supplier"
+          value={note}
+          onChange={e => setNote(e.target.value)}
+        />
       </div>
       {error && <div className="error-text">{error}</div>}
     </Modal>

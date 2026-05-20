@@ -519,8 +519,7 @@ app.post('/api/warehouses/:whId/products', auth, async (req, res) => {
 
 app.post('/api/products/:id/transaction', auth, async (req, res) => {
   try {
-    const { type, amount, note } = req.body;
-
+    const { type, amount, note, created_at } = req.body;
     const productResult = await query(
       'SELECT * FROM products WHERE id = $1',
       [req.params.id]
@@ -556,14 +555,15 @@ app.post('/api/products/:id/transaction', auth, async (req, res) => {
 
     await query(
       `INSERT INTO transactions
-       (product_id, type, amount, quantity_after, note)
-       VALUES ($1, $2, $3, $4, $5)`,
+   (product_id, type, amount, quantity_after, note, created_at)
+   VALUES ($1, $2, $3, $4, $5, $6)`,
       [
         req.params.id,
         type,
         qty,
         newQty,
         note || null,
+        created_at || new Date().toISOString(),
       ]
     );
 

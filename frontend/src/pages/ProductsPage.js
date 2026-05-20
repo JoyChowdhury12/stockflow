@@ -114,7 +114,7 @@ function HistoryModal({ product, onClose }) {
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text2)' }}>→ {h.quantity_after}</div>
                 <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
-                  {new Date(h.created_at).toLocaleString('en-US', {
+                  {new Date(h.created_at.replace(' ', 'T')).toLocaleString('en-US', {
                     month: 'numeric',
                     day: 'numeric',
                     year: 'numeric',
@@ -456,7 +456,7 @@ function DateHistoryModal({ warehouse, onClose }) {
                 color: 'var(--text3)',
                 marginTop: 4
               }}>
-                {new Date(h.created_at).toLocaleString('en-US', {
+                {new Date(h.created_at.replace(' ', 'T')).toLocaleString('en-US', {
                   month: 'numeric',
                   day: 'numeric',
                   year: 'numeric',

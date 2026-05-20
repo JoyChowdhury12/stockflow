@@ -563,8 +563,7 @@ app.post('/api/products/:id/transaction', auth, async (req, res) => {
         qty,
         newQty,
         note || null,
-        created_at || new Date().toISOString(),
-      ]
+        created_at || new Date()]
     );
 
     const updated = await query(

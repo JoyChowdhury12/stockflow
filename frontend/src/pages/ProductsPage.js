@@ -309,6 +309,7 @@ function TransactModal({ product, type, onClose, onDone }) {
           type="datetime-local"
           className="input"
           value={transactionDate}
+          max={getLocalDateTime()}
           onChange={(e) => setTransactionDate(e.target.value)}
         />
       </div>
@@ -328,9 +329,12 @@ function TransactModal({ product, type, onClose, onDone }) {
   );
 }
 function DateHistoryModal({ warehouse, onClose }) {
-  const [date, setDate] = useState(
-    new Date().toISOString().split('T')[0]
-  );
+  const today = new Date();
+
+  const localDate =
+    `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+  const [date, setDate] = useState(localDate);
 
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);

@@ -96,16 +96,16 @@ async function initDb() {
   `);
 
   await query(`
-    CREATE TABLE IF NOT EXISTS transactions (
-      id SERIAL PRIMARY KEY,
-      product_id INTEGER NOT NULL,
-      type TEXT NOT NULL,
-      amount NUMERIC NOT NULL,
-      quantity_after NUMERIC NOT NULL,
-      note TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+  CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    amount NUMERIC NOT NULL,
+    quantity_after NUMERIC NOT NULL,
+    note TEXT,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+  )
+`);
 
   console.log('✅ PostgreSQL connected');
 }

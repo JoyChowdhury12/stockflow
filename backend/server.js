@@ -563,7 +563,7 @@ app.post('/api/products/:id/transaction', auth, async (req, res) => {
         qty,
         newQty,
         note || null,
-        created_at || new Date()]
+        created_at || new Date().toLocaleString('sv-SE')]
     );
 
     const updated = await query(

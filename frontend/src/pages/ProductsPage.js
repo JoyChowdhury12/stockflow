@@ -217,8 +217,18 @@ function AddProductModal({ warehouseId, onClose, onAdd }) {
 function TransactModal({ product, type, onClose, onDone }) {
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
+  const getLocalDateTime = () => {
+    const now = new Date();
+
+    now.setMinutes(
+      now.getMinutes() - now.getTimezoneOffset()
+    );
+
+    return now.toISOString().slice(0, 16);
+  };
+
   const [transactionDate, setTransactionDate] = useState(
-    new Date().toISOString().slice(0, 16)
+    getLocalDateTime()
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');

@@ -114,8 +114,15 @@ function HistoryModal({ product, onClose }) {
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text2)' }}>→ {h.quantity_after}</div>
                 <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
-                  {new Date(h.created_at).toLocaleDateString()} {new Date(h.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </div>
+                  {new Date(h.created_at).toLocaleString('en-US', {
+                    timeZone: 'Asia/Dhaka',
+                    month: 'numeric',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                  })}                </div>
               </div>
             </div>
           ))}
@@ -220,11 +227,14 @@ function TransactModal({ product, type, onClose, onDone }) {
   const getLocalDateTime = () => {
     const now = new Date();
 
-    now.setMinutes(
-      now.getMinutes() - now.getTimezoneOffset()
-    );
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
 
-    return now.toISOString().slice(0, 16);
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   const [transactionDate, setTransactionDate] = useState(
@@ -443,9 +453,14 @@ function DateHistoryModal({ warehouse, onClose }) {
                 color: 'var(--text3)',
                 marginTop: 4
               }}>
-                {new Date(h.created_at).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit'
+                {new Date(h.created_at).toLocaleString('en-US', {
+                  timeZone: 'Asia/Dhaka',
+                  month: 'numeric',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true,
                 })}
               </div>
             </div>

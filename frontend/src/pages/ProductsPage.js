@@ -242,7 +242,7 @@ function TransactModal({ product, type, onClose, onDone }) {
         type,
         amount: qty,
         note,
-        created_at: new Date(transactionDate).toISOString()
+        created_at: transactionDate
       }); onDone(updated);
     } catch (e) { setError(e.message); }
     setSaving(false);

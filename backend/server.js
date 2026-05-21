@@ -880,8 +880,8 @@ app.get('/api/history-by-date', auth, async (req, res) => {
       JOIN warehouses
         ON warehouses.id = products.warehouse_id
       WHERE warehouses.user_id = $1
-AND warehouses.id = $2
-AND DATE(transactions.created_at) = $3
+      AND warehouses.id = $2
+      AND DATE(transactions.created_at AT TIME ZONE 'Asia/Dhaka') = $3
       ORDER BY transactions.created_at DESC
       `,
       [req.user.id, req.query.warehouseId, date]);

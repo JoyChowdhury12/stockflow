@@ -329,6 +329,12 @@ select.input {
   border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
+.tag-cyan {
+  background: rgba(6, 182, 212, 0.15);
+  color: #06b6d4;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {

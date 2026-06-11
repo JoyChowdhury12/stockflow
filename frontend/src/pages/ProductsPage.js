@@ -4,7 +4,7 @@ import { api } from '../api';
 import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
 
-const CATEGORIES = ['Pieces', 'Cartoon', 'Bag', 'Bosta'];
+const CATEGORIES = ['Pieces', 'Cartoon', 'Bag', 'Bosta', 'Pata'];
 
 function CategoryTag({ cat }) {
 
@@ -60,6 +60,14 @@ function CategoryTag({ cat }) {
     return (
       <span className="tag tag-orange" {...commonProps}>
         🧺 Bosta
+      </span>
+    );
+  }
+
+  if (cat === 'Pata') {
+    return (
+      <span className="tag tag-cyan" {...commonProps}>
+        🔗 Pata
       </span>
     );
   }
@@ -741,6 +749,8 @@ export default function ProductsPage({ warehouse, onBack }) {
             { label: 'Total Bags', value: totalByCategory('Bag'), icon: '👜', color: '#22c55e' },
 
             { label: 'Total Bosta', value: totalByCategory('Bosta'), icon: '🧺', color: '#f97316' },
+
+            { label: 'Total Pata', value: totalByCategory('Pata'), icon: '🔗', color: '#06b6d4' },
 
           ].map(s => (
 

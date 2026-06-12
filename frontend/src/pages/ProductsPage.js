@@ -1054,7 +1054,28 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
       <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
         {/* Name & category */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontWeight: 700, fontSize: 15, fontFamily: 'var(--font-head)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{product.name}</div>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: 15,
+              fontFamily: 'var(--font-head)',
+
+              overflow: expanded ? 'visible' : 'hidden',
+
+              textOverflow: expanded
+                ? 'clip'
+                : 'ellipsis',
+
+              whiteSpace: expanded
+                ? 'normal'
+                : 'nowrap',
+
+              transition: 'all 0.25s ease',
+              lineHeight: 1.3,
+            }}
+          >
+            {product.name}
+          </div>
           <div style={{ marginTop: 4 }}><CategoryTag cat={product.category} /></div>
         </div>
 
@@ -1096,7 +1117,7 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
       {/* Expanded actions */}
       <div
         style={{
-          maxHeight: expanded ? '120px' : '0px',
+          maxHeight: expanded ? '180px' : '0px',
           opacity: expanded ? 1 : 0,
 
           overflow: 'hidden',

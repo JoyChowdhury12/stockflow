@@ -637,21 +637,10 @@ export default function ProductsPage({ warehouse, onBack }) {
           duration: 9500,
 
           style: {
-            background: "rgba(17, 24, 39, 0.78)",
-
-            backdropFilter: "blur(18px)",
-            WebkitBackdropFilter: "blur(18px)",
-
-            border: "1px solid rgba(255,255,255,0.06)",
-
-            boxShadow:
-              "0 8px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03)",
-
-            color: "white",
-
-            padding: "10px 16px",
-
-            borderRadius: "18px",
+            background: "transparent",
+            boxShadow: "none",
+            border: "none",
+            padding: 0,
           },
         }
       );

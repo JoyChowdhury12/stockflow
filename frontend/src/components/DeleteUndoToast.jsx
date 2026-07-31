@@ -13,7 +13,13 @@ export default function DeleteUndoToast({
             setSeconds((prev) => {
                 if (prev <= 1) {
                     clearInterval(interval);
-                    setFinished(true);
+
+                    toast.dismiss(t.id);
+
+                    toast.success("Product deleted!", {
+                        duration: 1500,
+                    });
+
                     return 0;
                 }
 
@@ -48,6 +54,19 @@ export default function DeleteUndoToast({
                 gap: 12,
                 alignItems: "flex-start",
                 minWidth: 300,
+
+                background: "rgba(17,24,39,.72)",
+                backdropFilter: "blur(18px)",
+                WebkitBackdropFilter: "blur(18px)",
+
+                border: "1px solid rgba(255,255,255,.06)",
+
+                borderRadius: 18,
+
+                padding: "10px 16px",
+
+                boxShadow:
+                    "0 8px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03)",
             }}
         >
             {/* Icon */}

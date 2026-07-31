@@ -7,12 +7,13 @@ export default function DeleteUndoToast({
     onUndo,
 }) {
     const [seconds, setSeconds] = useState(8);
-
+    const [finished, setFinished] = useState(false);
     useEffect(() => {
         const interval = setInterval(() => {
             setSeconds((prev) => {
                 if (prev <= 1) {
                     clearInterval(interval);
+                    setFinished(true);
                     return 0;
                 }
 
@@ -24,8 +25,23 @@ export default function DeleteUndoToast({
     }, []);
 
     const progress = (seconds / 8) * 100;
-
+    if (finished) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    fontWeight: 600,
+                    color: "#4ade80",
+                }}
+            >
+                ✅ Product deleted
+            </div>
+        );
+    }
     return (
+
         <div
             style={{
                 display: "flex",
@@ -37,9 +53,9 @@ export default function DeleteUndoToast({
             {/* Icon */}
             <div
                 style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 10,
+                    width: 32,
+                    height: 32,
+                    borderRadius: 9,
                     background: "rgba(239,68,68,0.15)",
                     display: "flex",
                     alignItems: "center",
@@ -73,7 +89,7 @@ export default function DeleteUndoToast({
                     <div
                         style={{
                             flex: 1,
-                            height: 6,
+                            height: 5,
                             background: "rgba(255,255,255,0.08)",
                             borderRadius: 999,
                             overflow: "hidden",
@@ -93,10 +109,11 @@ export default function DeleteUndoToast({
                         style={{
                             fontSize: 12,
                             color: "#aaa",
-                            width: 20,
+                            width: 24,
+                            textAlign: "center",
                         }}
                     >
-                        {seconds}s
+                        {String(seconds).padStart(2, "0")}s
                     </span>
 
                     <button

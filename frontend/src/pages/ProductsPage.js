@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import DeleteUndoToast from "../components/DeleteUndoToast";
 import toast from 'react-hot-toast';
 import { api } from '../api';
 import Navbar from '../components/Navbar';
@@ -489,8 +490,11 @@ export default function ProductsPage({ warehouse, onBack }) {
   const [showDateHistory, setShowDateHistory] = useState(false);
   const [historyProduct, setHistoryProduct] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
-  const [deleteProduct, setDeleteProduct] = useState(null); const [transact, setTransact] = useState(null); // { product, type }
+  const [deleteProduct, setDeleteProduct] = useState(null);
+  const [undoSeconds, setUndoSeconds] = useState(8);
+  const [transact, setTransact] = useState(null); // { product, type }
   const anyModalOpen = showAdd || showDateHistory || historyProduct || editProduct || transact || deleteProduct;
+
   useEffect(() => {
     const handlePopState = () => {
       if (anyModalOpen) {
@@ -613,96 +617,21 @@ export default function ProductsPage({ warehouse, onBack }) {
 
       toast(
         (t) => (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              minWidth: 260,
+          <DeleteUndoToast
+            t={t}
+            name={product.name}
+            onUndo={async () => {
+              try {
+                await api.restoreProduct(product.id);
+                await load();
+
+                toast.dismiss(t.id);
+                toast.success("Product restored");
+              } catch (e) {
+                toast.error("Cannot restore. Product name already exists.");
+              }
             }}
-          >
-            <div
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 10,
-                background: 'rgba(239,68,68,0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 16,
-                flexShrink: 0,
-              }}
-            >
-              🗑
-            </div>
-
-            <div style={{ flex: 1 }}>
-              <div
-                style={{
-                  fontWeight: 700,
-                  fontSize: 14,
-                  color: 'white',
-                }}
-              >
-                Deleted: {product.name}
-              </div>
-
-              <div
-                style={{
-                  fontSize: 12,
-                  color: '#aaa',
-                  marginTop: 2,
-                }}
-              >
-                Restore within 8 seconds
-              </div>
-            </div>
-
-            <button
-              onClick={async () => {
-
-                try {
-
-                  await api.restoreProduct(product.id);
-
-                  await load();
-
-                  toast.dismiss(t.id);
-
-                  toast.success('Product restored');
-
-                } catch (e) {
-
-                  toast.error(
-                    'Cannot restore. Product name already exists.'
-                  );
-
-                }
-              }}
-
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = '0.85';
-              }}
-
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = '1';
-              }}
-
-              style={{
-                border: 'none',
-                background: '#4f8ef7',
-                color: 'white',
-                padding: '8px 14px',
-                borderRadius: 10,
-                cursor: 'pointer',
-                fontWeight: 600,
-                transition: '0.2s',
-              }}
-            >
-              Undo
-            </button>
-          </div>
+          />
         ),
         {
           duration: 8000,

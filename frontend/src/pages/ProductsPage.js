@@ -619,7 +619,9 @@ export default function ProductsPage({ warehouse, onBack }) {
         (t) => (
           <DeleteUndoToast
             t={t}
+            label="Deleting Product"
             name={product.name}
+            successMessage="Product deleted!"
             onUndo={async () => {
               try {
                 await api.restoreProduct(product.id);

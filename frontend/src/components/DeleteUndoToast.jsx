@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 export default function DeleteUndoToast({
     t,
     name,
+    label = "Deleting",
     onUndo,
     successMessage = "Product deleted!",
 }) {
@@ -96,7 +97,7 @@ export default function DeleteUndoToast({
                         marginBottom: 8,
                     }}
                 >
-                    Deleting: {name}
+                    {label}: {name}
                 </div>
 
                 <div

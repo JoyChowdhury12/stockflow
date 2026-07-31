@@ -76,21 +76,18 @@ export default function WarehousesPage({ onEnter }) {
         (t) => (
           <DeleteUndoToast
             t={t}
+            label="Deleting Warehouse"
             name={wh.name}
             successMessage="Warehouse deleted!"
             onUndo={async () => {
               try {
                 await api.restoreWarehouse(wh.id);
-
                 await load();
 
                 toast.dismiss(t.id);
-
-                toast.success("Warehouse restored!");
+                toast.success("Warehouse restored");
               } catch (e) {
-                toast.error(
-                  "Cannot restore. Warehouse name already exists."
-                );
+                toast.error("Cannot restore. Warehouse name already exists.");
               }
             }}
           />

@@ -5,6 +5,7 @@ export default function DeleteUndoToast({
     t,
     name,
     onUndo,
+    successMessage = "Product deleted!",
 }) {
     const [seconds, setSeconds] = useState(8);
     const [finished, setFinished] = useState(false);
@@ -16,7 +17,7 @@ export default function DeleteUndoToast({
 
                     toast.dismiss(t.id);
 
-                    toast.success("Product deleted!", {
+                    toast.success(successMessage, {
                         duration: 1500,
                     });
 

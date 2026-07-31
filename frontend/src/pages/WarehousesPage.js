@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DeleteUndoToast from "../components/DeleteUndoToast";
 import { api } from '../api';
 import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
@@ -73,105 +74,35 @@ export default function WarehousesPage({ onEnter }) {
 
       toast(
         (t) => (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 14,
-              minWidth: 280,
+          <DeleteUndoToast
+            t={t}
+            name={wh.name}
+            successMessage="Warehouse deleted!"
+            onUndo={async () => {
+              try {
+                await api.restoreWarehouse(wh.id);
+
+                await load();
+
+                toast.dismiss(t.id);
+
+                toast.success("Warehouse restored!");
+              } catch (e) {
+                toast.error(
+                  "Cannot restore. Warehouse name already exists."
+                );
+              }
             }}
-          >
-            <div
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: 12,
-                background: 'rgba(239,68,68,0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 18,
-                flexShrink: 0,
-              }}
-            >
-              🗑
-            </div>
-
-            <div style={{ flex: 1 }}>
-              <div
-                style={{
-                  fontWeight: 700,
-                  fontSize: 14,
-                  color: 'white',
-                }}
-              >
-                Deleted: {wh.name}
-              </div>
-
-              <div
-                style={{
-                  fontSize: 12,
-                  color: '#aaa',
-                  marginTop: 2,
-                }}
-              >
-                You can restore it within 8 seconds
-              </div>
-            </div>
-
-            <button
-              onClick={async () => {
-
-                try {
-
-                  await api.restoreWarehouse(wh.id);
-
-                  await load();
-
-                  toast.dismiss(t.id);
-
-                  toast.success('Warehouse restored');
-
-                } catch (e) {
-
-                  toast.error(
-                    'Cannot restore. Warehouse name already exists.'
-                  );
-
-                }
-
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = '0.85';
-              }}
-
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = '1';
-              }}
-
-              style={{
-                border: 'none',
-                background: '#4f8ef7',
-                color: 'white',
-                padding: '8px 14px',
-                borderRadius: 10,
-                cursor: 'pointer',
-                fontWeight: 600,
-                transition: '0.2s',
-              }}
-            >
-              Undo
-            </button>
-          </div>
+          />
         ),
         {
-          duration: 8000,
+          duration: 9500,
+
           style: {
-            background: '#111827',
-            border: '1px solid rgba(255,255,255,0.08)',
-            color: 'white',
-            padding: '14px 16px',
-            borderRadius: '18px',
+            background: "transparent",
+            padding: 0,
+            border: "none",
+            boxShadow: "none",
           },
         }
       );

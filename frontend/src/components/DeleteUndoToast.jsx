@@ -9,7 +9,6 @@ export default function DeleteUndoToast({
     successMessage = "Product deleted!",
 }) {
     const [seconds, setSeconds] = useState(8);
-    const [finished, setFinished] = useState(false);
     const intervalRef = useRef(null);
     useEffect(() => {
         intervalRef.current = setInterval(() => {
@@ -40,21 +39,6 @@ export default function DeleteUndoToast({
         await onUndo();
     };
 
-    if (finished) {
-        return (
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    fontWeight: 600,
-                    color: "#4ade80",
-                }}
-            >
-                ✅ Product deleted
-            </div>
-        );
-    }
     return (
 
         <div

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function DeleteUndoToast({
@@ -10,11 +10,12 @@ export default function DeleteUndoToast({
 }) {
     const [seconds, setSeconds] = useState(8);
     const [finished, setFinished] = useState(false);
+    const intervalRef = useRef(null);
     useEffect(() => {
-        const interval = setInterval(() => {
+        intervalRef.current = setInterval(() => {
             setSeconds((prev) => {
                 if (prev <= 1) {
-                    clearInterval(interval);
+                    clearInterval(intervalRef.current);
 
                     toast.dismiss(t.id);
 
@@ -29,10 +30,16 @@ export default function DeleteUndoToast({
             });
         }, 1000);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(intervalRef.current);
     }, []);
 
     const progress = (seconds / 8) * 100;
+
+    const handleUndo = async () => {
+        clearInterval(intervalRef.current);
+        await onUndo();
+    };
+
     if (finished) {
         return (
             <div
@@ -138,7 +145,7 @@ export default function DeleteUndoToast({
                     </span>
 
                     <button
-                        onClick={onUndo}
+                        onClick={handleUndo}
                         style={{
                             border: "none",
                             background: "#4f8ef7",

@@ -253,16 +253,33 @@ function TransactModal({ product, type, onClose, onDone }) {
 
   const handleSubmit = async () => {
     const qty = parseFloat(amount);
-    if (!qty || qty <= 0) { setError('Enter a valid amount'); return; }
+
+    if (!qty || qty <= 0) {
+      setError('Enter a valid amount');
+      return;
+    }
+
     setSaving(true);
+
     try {
       const updated = await api.transact(product.id, {
         type,
         amount: qty,
         note,
         created_at: new Date(transactionDate).toISOString()
-      }); onDone(updated);
-    } catch (e) { setError(e.message); }
+      });
+
+      // Vibrate ONLY after server successfully completes the transaction
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+
+      onDone(updated);
+    } catch (e) {
+      // No vibration if server fails
+      setError(e.message);
+    }
+
     setSaving(false);
   };
 

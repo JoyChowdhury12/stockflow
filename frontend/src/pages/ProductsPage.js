@@ -838,8 +838,27 @@ export default function ProductsPage({ warehouse, onBack }) {
         </div>
 
         {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 60 }}><span className="spinner spinner-lg" /></div>
+          <div className="product-skeleton-list">
+            {[1, 2, 3, 4].map(i => (
+              <div className="product-skeleton" key={i}>
+                <div className="skeleton-content">
+                  <div className="skeleton-name skeleton-shimmer" />
+                  <div className="skeleton-tag skeleton-shimmer" />
+                </div>
+
+                <div className="skeleton-quantity skeleton-shimmer" />
+
+                <div className="skeleton-buttons">
+                  <div className="skeleton-button skeleton-shimmer" />
+                  <div className="skeleton-button skeleton-shimmer" />
+                </div>
+
+                <div className="skeleton-more skeleton-shimmer" />
+              </div>
+            ))}
+          </div>
         ) : filtered.length === 0 ? (
+
           <div className="empty-state">
             <img
               src="/favicon.png"

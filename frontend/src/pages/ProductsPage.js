@@ -952,6 +952,50 @@ export default function ProductsPage({ warehouse, onBack }) {
     </div>
   );
 }
+function AnimatedQuantity({ value, animate }) {
+  const [displayValue, setDisplayValue] = useState(value);
+
+  useEffect(() => {
+    if (!animate) {
+      setDisplayValue(value);
+      return;
+    }
+
+    const startValue = Number(displayValue);
+    const endValue = Number(value);
+
+    if (startValue === endValue) return;
+
+    const duration = 450;
+    const startTime = performance.now();
+
+    const animateNumber = (currentTime) => {
+      const progress = Math.min(
+        (currentTime - startTime) / duration,
+        1
+      );
+
+      // Smooth ease-out
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      const current = startValue + (endValue - startValue) * eased;
+
+      setDisplayValue(
+        Number.isInteger(endValue)
+          ? Math.round(current)
+          : current.toFixed(1)
+      );
+
+      if (progress < 1) {
+        requestAnimationFrame(animateNumber);
+      }
+    };
+
+    requestAnimationFrame(animateNumber);
+  }, [value, animate]);
+
+  return <>{displayValue}</>;
+}
 
 function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
 
@@ -1042,8 +1086,10 @@ function ProductRow({ product, onIn, onOut, onHistory, onEdit, onDelete }) {
                     : 'var(--text)',
             }}
           >
-            {product.quantity}
-          </div>
+            <AnimatedQuantity
+              value={product.quantity}
+              animate={product.animate}
+            />          </div>
 
           <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
             {product.category}

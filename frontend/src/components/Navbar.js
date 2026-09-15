@@ -232,6 +232,10 @@ export default function Navbar({ warehouseName, onBack }) {
                     background: lightMode ? '#dbe4f5' : '#111827',
                     cursor: 'pointer',
                     position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    lineHeight: 0,
                     transition: 'background 0.2s ease',
                     flexShrink: 0,
                   }}
@@ -244,9 +248,10 @@ export default function Navbar({ warehouseName, onBack }) {
                       borderRadius: '50%',
                       background: lightMode ? '#4f8ef7' : '#8b96b0',
                       transform: lightMode
-                        ? 'translateX(18px)'
-                        : 'translateX(0)',
+                        ? 'translate(18px, -1px)'
+                        : 'translate(0, -1px)',
                       transition: 'transform 0.2s ease, background 0.2s ease',
+                      flexShrink: 0,
                     }}
                   />
                 </button>

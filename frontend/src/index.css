@@ -29,6 +29,20 @@
   --font-head: 'Sora', sans-serif;
 }
 
+html[data-theme="light"] {
+  --bg: #f5f7fb;
+  --bg2: #ffffff;
+  --bg3: #eef2f8;
+  --card: #ffffff;
+  --border: #d9e0ec;
+
+  --text: #172033;
+  --text2: #647089;
+  --text3: #94a0b5;
+
+  --shadow: 0 4px 24px rgba(30, 45, 70, 0.10);
+}
+
 html {
   font-size: 16px;
 }

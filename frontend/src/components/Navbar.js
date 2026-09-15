@@ -224,18 +224,16 @@ export default function Navbar({ warehouseName, onBack }) {
                   onClick={() => setLightMode(prev => !prev)}
                   aria-label="Toggle theme"
                   style={{
+                    display: 'flex',       // Added to enable flexbox
+                    alignItems: 'center',  // Added to center the circle vertically
                     width: 42,
                     height: 22,
-                    padding: 2,
+                    padding: '0 2px',      // Changed from 2 to '0 2px' (horizontal padding only)
                     borderRadius: 99,
                     border: '1px solid var(--border)',
                     background: lightMode ? '#dbe4f5' : '#111827',
                     cursor: 'pointer',
                     position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    lineHeight: 0,
                     transition: 'background 0.2s ease',
                     flexShrink: 0,
                   }}
@@ -248,10 +246,9 @@ export default function Navbar({ warehouseName, onBack }) {
                       borderRadius: '50%',
                       background: lightMode ? '#4f8ef7' : '#8b96b0',
                       transform: lightMode
-                        ? 'translate(18px, -1px)'
-                        : 'translate(0, -1px)',
+                        ? 'translateX(18px)'
+                        : 'translateX(0)',
                       transition: 'transform 0.2s ease, background 0.2s ease',
-                      flexShrink: 0,
                     }}
                   />
                 </button>

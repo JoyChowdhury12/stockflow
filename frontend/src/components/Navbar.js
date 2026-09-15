@@ -136,7 +136,7 @@ export default function Navbar({ warehouseName, onBack }) {
               >
                 <path
                   d="M15 18L9 12L15 6"
-                  stroke="white"
+                  stroke="var(--text)"
                   strokeWidth="2.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"

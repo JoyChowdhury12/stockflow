@@ -19,6 +19,9 @@ export default function Navbar({ warehouseName, onBack }) {
   const { user, logout, updateUser } = useAuth();
   const toast = useToast();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [lightMode, setLightMode] = useState(
+    localStorage.getItem('stockflow-theme') === 'light'
+  );
   const [modal, setModal] = useState(null); // 'name' | 'email' | 'password'
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
@@ -31,6 +34,18 @@ export default function Navbar({ warehouseName, onBack }) {
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      'data-theme',
+      lightMode ? 'light' : 'dark'
+    );
+
+    localStorage.setItem(
+      'stockflow-theme',
+      lightMode ? 'light' : 'dark'
+    );
+  }, [lightMode]);
 
   const openModal = (type) => { setModal(type); setForm({}); setError(''); setMenuOpen(false); };
   const closeModal = () => { setModal(null); setForm({}); setError(''); };
@@ -101,7 +116,7 @@ export default function Navbar({ warehouseName, onBack }) {
     <>
       <nav style={{
         position: 'sticky', top: 0, zIndex: 50,
-        background: 'rgba(15,17,23,0.92)', backdropFilter: 'blur(12px)',
+        background: 'color-mix(in srgb, var(--bg2) 92%, transparent)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--border)', padding: '0 16px',
         height: 58, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
@@ -191,6 +206,51 @@ export default function Navbar({ warehouseName, onBack }) {
                 </button>
               ))}
               <div style={{ height: 1, background: 'var(--border)', margin: '4px 0' }} />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 16px',
+                  color: 'var(--text)',
+                  fontSize: 14,
+                }}
+              >
+                <span>
+                  {lightMode ? '☀️  Light Mode' : '🌙  Dark Mode'}
+                </span>
+
+                <button
+                  onClick={() => setLightMode(prev => !prev)}
+                  aria-label="Toggle theme"
+                  style={{
+                    width: 42,
+                    height: 22,
+                    padding: 2,
+                    borderRadius: 99,
+                    border: '1px solid var(--border)',
+                    background: lightMode ? '#dbe4f5' : '#111827',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    transition: 'background 0.2s ease',
+                    flexShrink: 0,
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'block',
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      background: lightMode ? '#4f8ef7' : '#8b96b0',
+                      transform: lightMode
+                        ? 'translateX(18px)'
+                        : 'translateX(0)',
+                      transition: 'transform 0.2s ease, background 0.2s ease',
+                    }}
+                  />
+                </button>
+              </div>
               <button onClick={() => { logout(); setMenuOpen(false); }} style={{
                 display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
                 background: 'transparent', border: 'none', cursor: 'pointer',

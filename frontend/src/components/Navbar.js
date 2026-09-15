@@ -51,6 +51,11 @@ export default function Navbar({ warehouseName, onBack }) {
   const closeModal = () => { setModal(null); setForm({}); setError(''); };
 
   const handleSave = () => {
+    if (modal === 'name') {
+      handleConfirmedSave();
+      return;
+    }
+
     setConfirmOpen(true);
   };
 
